@@ -53,14 +53,14 @@ export default function Home() {
   });
 
   return (
-    <main className="max-w-5xl mx-auto p-6">
+    <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">
         Movie Explorer
       </h1>
 
       <SearchBar onSearch={handleSearch} />
       {movies && <MoviesGrid movies={movies} />}
-
+    
       {!movies.length && !loading && (
         <div>
           {heroBanners && <HeroCarousel movies={heroBanners} />}
@@ -76,6 +76,6 @@ export default function Home() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }
