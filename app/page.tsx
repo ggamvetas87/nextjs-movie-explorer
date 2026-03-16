@@ -18,13 +18,13 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
-  const [popular, setPopular] = useState<MovieListItem[] | null>(null);
   const [trending, setTrending] = useState<MovieListItem[] | null>(null);
+  const [popular, setPopular] = useState<MovieListItem[] | null>(null);
 
   useEffect(() => {
-    loadMovies("Star Wars", 1, 8).then(setHeroBanners);
-    loadMovies("Adventure", 1, 8).then(setPopular);
+    loadMovies("Lethal Weapon", 1, 8).then(setHeroBanners);
     loadMovies("Comedy", 1, 8).then(setTrending);
+    loadMovies("Adventure", 1, 8).then(setPopular);
   }, []);
 
   async function handleSearch(newQuery: string) {
