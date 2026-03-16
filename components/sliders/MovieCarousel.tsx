@@ -94,7 +94,7 @@ export default function MovieCarousel({
                 className="bg-black text-white px-2 py-1 rounded"
                 onClick={() => embla?.scrollPrev()}
               >
-                {"< Prev"}
+                &larr; Prev
               </button>
           </div>
           <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
@@ -102,7 +102,7 @@ export default function MovieCarousel({
                 className="bg-black text-white px-2 py-1 rounded"
                 onClick={() => embla?.scrollNext()}
               >
-                {"Next >"}
+                Next &rarr;
               </button>
           </div>
         </>

@@ -50,10 +50,10 @@ export default function HeroCarousel({
           <button
             key={movie["#IMG_POSTER"]}
             className={`
-                w-3 h-3 rounded-full transition
-                ${index === selectedIndex
-                ? "bg-white"
-                : "bg-white/40"}
+              w-3 h-3 rounded-full transition
+              ${index === selectedIndex
+              ? "bg-white"
+              : "bg-white/40"}
             `}
             onClick={() => embla?.scrollTo(index)}
           />
@@ -61,22 +61,22 @@ export default function HeroCarousel({
       </div>}
       {showButtons && (
         <>
-            <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-                <button
-                    className="bg-black text-white px-2 py-1 rounded"
-                    onClick={() => embla?.scrollPrev()}
-                    >
-                        {"< Prev"}
-                </button>
-            </div>
-            <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
-                <button
-                    className="bg-black text-white px-2 py-1 rounded"
-                    onClick={() => embla?.scrollNext()}
-                >
-                    {"Next >"}
-                </button>
-            </div>
+          <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
+            <button
+              className="bg-black text-white px-2 py-1 rounded"
+              onClick={() => embla?.scrollPrev()}
+            >
+              &larr; Prev
+            </button>
+          </div>
+          <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
+            <button
+              className="bg-black text-white px-2 py-1 rounded"
+              onClick={() => embla?.scrollNext()}
+            >
+              Next &rarr;
+            </button>
+          </div>
         </>
      )}
     </div>
