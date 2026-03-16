@@ -4,10 +4,9 @@ import { useState, useEffect } from "react";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import SearchBar from "@/components/SearchBar";
-import MovieCard from "@/components/MovieCard";
 import MovieRow from "@/components/MovieRow";
-import HeroBanner from "@/components/HeroBanner";
-import HeroSkeleton from "@/components/HeroSkeleton";
+import HeroCarousel from "@/components/sliders/HeroCarousel";
+import MoviesGrid from "@/components/MoviesGrid";
 import { searchMovies } from "@/lib/api";
 import { loadMovies } from "@/lib/helpers";
 import { MovieListItem } from "@/types/movies";
@@ -22,7 +21,8 @@ export default function Home() {
   const [popular, setPopular] = useState<MovieListItem[] | null>(null);
 
   useEffect(() => {
-    loadMovies("Lethal Weapon", 1, 8).then(setHeroBanners);
+    // Load initial data for hero banners, trending and popular sections
+    loadMovies("Lethal Weapon", 1, 4).then(setHeroBanners);
     loadMovies("Comedy", 1, 8).then(setTrending);
     loadMovies("Adventure", 1, 8).then(setPopular);
   }, []);
@@ -59,25 +59,22 @@ export default function Home() {
       </h1>
 
       <SearchBar onSearch={handleSearch} />
-      {movies && <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {movies.map((movie) => (
-          <MovieCard key={movie["#IMDB_ID"]} movie={movie} />
-        ))}
-      </div>}
-      {heroBanners && (!movies.length && !loading) ? (
+      {movies && <MoviesGrid movies={movies} />}
+
+      {!movies.length && !loading && (
         <div>
-          <HeroBanner movie={heroBanners[0]} />
-          {trending && <MovieRow
-            title="Trending"
-            movies={trending.slice(0, 4)}
-          />}
-          {popular && <MovieRow
-            title="Popular"
-            movies={popular.slice(0, 4)}
-          />}
+          {heroBanners && <HeroCarousel movies={heroBanners} />}
+          <div>
+            {trending && <MovieRow
+              title="Trending"
+              movies={trending}
+            />}
+            {popular && <MovieRow
+              title="Popular"
+              movies={popular}
+            />}
+          </div>
         </div>
-      ) : !query && !movies.length && (
-        <HeroSkeleton />
       )}
     </main>
   );

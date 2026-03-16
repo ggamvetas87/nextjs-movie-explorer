@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { useMovies } from "@/context/MoviesContext";
-import MovieSkeleton from "@/components/HeroSkeleton";
+import MovieCardSkeleton from "@/components/cards/MovieCardSkeleton";
 
 export default function SearchBar({ onSearch }: { onSearch: (query: string) => Promise<void> }) {
     const { loading, setLoading, query, setQuery, setMovies } = useMovies();
@@ -52,7 +52,7 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
             {loading && (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Array.from({ length: 8 }).map((_, i) => (
-                    <MovieSkeleton key={i} />
+                    <MovieCardSkeleton key={i} />
                 ))}
                 </div>
             )}
