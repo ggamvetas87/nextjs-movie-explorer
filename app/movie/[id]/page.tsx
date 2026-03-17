@@ -1,18 +1,20 @@
 import { Metadata } from 'next';
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { getMovie } from "@/lib/api";
 import VideoPlayer from "@/components/media/VideoPlayer";
 
-// const VideoPlayer = dynamic(() => import("@/components/media/VideoPlayer"), {
-//   ssr: false
-// });
-
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const { id } = await params;
   const data = await getMovie(id);
-  const movie = data.short;
+  const movie = data?.short;
+
+  if (!movie) {
+    return {
+      title: "Movie not found",
+      description: "The movie you are looking for does not exist."
+    };
+  }
 
   return {
     title: movie.name,
@@ -35,13 +37,15 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
 
       <div className="max-w-3xl mx-auto p-6 flex flex-col md:flex-row gap-6">
         <div className="md:w-1/2">
-          <Image 
-            src={movie["image"]}
-            alt={movie["name"]} 
-            className="mb-4"
-            width={300}
-            height={600}
-          />
+          {movie["image"] && (
+            <Image 
+              src={movie["image"]}
+              alt={movie["name"]} 
+              className="mb-4"
+              width={300}
+              height={600}
+            />
+          )}
         </div>
 
         <div className="md:w-1/2">
@@ -58,14 +62,14 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
 
       {movie.trailer?.url && (
         <div className="max-w-3xl mx-auto p-6 gap-6">
-          <>
+          <div>
             <h4 className="text-2xl font-bold mb-4 text-center">
               {movie.trailer.name}
             </h4>
             <p className="mb-4 text-center">
               {movie.trailer.description}
             </p>
-          </>
+          </div>
           <VideoPlayer 
             url={movie.trailer.url}
             title={movie.trailer.name}
