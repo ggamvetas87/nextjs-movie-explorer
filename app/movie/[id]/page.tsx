@@ -55,7 +55,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
         </div>
 
         <div className="md:w-2/3">
-          <h1 className="text-3xl font-bold">{movie?.name}</h1>
+          <h2 className="text-3xl font-bold">{movie?.name}</h2>
           <p className="mt-2"><strong>Content Rating:</strong> {movie?.contentRating} - {movie?.aggregateRating?.ratingValue} &#9733;</p>
           {movie?.duration && <p className="mt-2"><strong>Duration:</strong> {movie.duration.replace("PT", "").replace("H", "h ").replace("M", "m")}</p>}
           <p className="mt-0"><strong>Categories:</strong> {movie?.genre?.join(", ")}</p>

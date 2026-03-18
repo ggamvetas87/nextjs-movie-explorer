@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { useMovies } from "@/context/MoviesContext";
 import Button from "@/components/interactions/Button";
+import Textbox from "@/components/form/Textbox";
 import MovieCardSkeleton from "@/components/cards/MovieCardSkeleton";
 
 export default function SearchBar({ onSearch }: { onSearch: (query: string) => Promise<void> }) {
@@ -38,16 +39,17 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
     return (
         <div>
             <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
-            <input
-                className="border p-2 rounded w-full"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search movies..."
-            />
-
-            <Button type="submit">
-                Search
-            </Button>
+                <Textbox
+                    styles={{
+                        input: "border p-2 rounded w-full"
+                    }}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search movies..."
+                />
+                <Button type="submit">
+                    Search
+                </Button>
             </form>
 
             {loading && (
