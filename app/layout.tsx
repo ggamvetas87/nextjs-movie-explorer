@@ -4,6 +4,7 @@ import "./globals.css";
 import { MoviesProvider } from "@/context/MoviesContext";
 import Header from "@/components/partial/Header";
 import Footer from "@/components/partial/Footer";
+import BackToTop from "@/components/interactions/BackToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,9 @@ export default function RootLayout({
       >
         <MoviesProvider>
           <Header />
-            {children}
+          {children}
           <Footer />
+          <BackToTop />
         </MoviesProvider>
       </body>
     </html>
