@@ -59,6 +59,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           <p className="mt-2"><strong>Content Rating:</strong> {movie?.contentRating} - {movie?.aggregateRating?.ratingValue} &#9733;</p>
           {movie?.duration && <p className="mt-2"><strong>Duration:</strong> {movie.duration.replace("PT", "").replace("H", "h ").replace("M", "m")}</p>}
           <p className="mt-0"><strong>Categories:</strong> {movie?.genre?.join(", ")}</p>
+          {movie?.datePublished && <p className="mt-2"><strong>Release Date:</strong> {new Date(movie.datePublished).toLocaleDateString()}</p>}
           <p className="mt-4">{movie?.description}</p>
 
           {movie?.actor?.length && (
