@@ -6,6 +6,7 @@ import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import SearchBar from "@/components/search/SearchBar";
 import MovieRow from "@/components/grids/MovieRow";
 import HeroCarousel from "@/components/sliders/HeroCarousel";
+import MovieCarousel from "@/components/sliders/MovieCarousel";
 import SearchResults from "@/components/search/SearchResults";
 import { searchMovies } from "@/lib/api";
 import { loadMovies } from "@/lib/helpers";
@@ -65,14 +66,16 @@ export default function Home() {
         <div>
           {heroBanners && <HeroCarousel movies={heroBanners} />}
           <div>
-            {trending && <MovieRow
-              title="Trending"
-              movies={trending}
-            />}
-            {popular && <MovieRow
-              title="Popular"
-              movies={popular}
-            />}
+            {trending && (
+              <MovieRow title="Trending">
+                <MovieCarousel movies={trending} />
+              </MovieRow>
+            )}
+            {popular && (
+              <MovieRow title="Popular">
+                <MovieCarousel movies={popular} />
+              </MovieRow>
+            )}
           </div>
         </div>
       )}

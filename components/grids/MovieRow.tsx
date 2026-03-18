@@ -1,18 +1,15 @@
-import MovieCarousel from "@/components/sliders/MovieCarousel";
-import { MovieListItem } from "@/types/movies";
+type MovieRowProps = {
+  title?: string;
+  children?: React.ReactNode;
+};
 
-interface MovieRowProps {
-  title: string;
-  movies: MovieListItem[];
-}
-
-export default function MovieRow({ title, movies }: MovieRowProps) {
+export default function MovieRow({ title, children }: MovieRowProps) {
     return (
         <section className="mb-10">
-            <h2 className="text-xl font-bold mb-4">
+            {title && <h2 className="text-xl font-bold mb-4">
                 {title}
-            </h2>
-            <MovieCarousel movies={movies} />
+            </h2>}
+            {children}
         </section>
     );
 }
