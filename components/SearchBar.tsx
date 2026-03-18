@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { useMovies } from "@/context/MoviesContext";
+import Button from "@/components/interactions/Button";
 import MovieCardSkeleton from "@/components/cards/MovieCardSkeleton";
 
 export default function SearchBar({ onSearch }: { onSearch: (query: string) => Promise<void> }) {
@@ -44,9 +45,9 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
                 placeholder="Search movies..."
             />
 
-            <button className="bg-red-500 text-white px-4 py-2 rounded">
+            <Button type="submit">
                 Search
-            </button>
+            </Button>
             </form>
 
             {loading && (

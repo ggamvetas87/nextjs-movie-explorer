@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import Button from "@/components/interactions/Button";
 import MovieCard from "@/components/cards/MovieCard";
 import { MovieListItem } from "@/types/movies";
 
@@ -75,8 +76,9 @@ export default function MovieCarousel({
       </div>
       {showDots && <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {movies.slice(0,count).map((movie, index) => (
-          <button
+          <Button
             key={movie["#IMG_POSTER"]}
+            importance="secondary"
             className={`
                 w-3 h-3 rounded-full transition
                 ${index === selectedIndex
@@ -90,20 +92,22 @@ export default function MovieCarousel({
       {showButtons && (
         <>
           <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-              <button
-                className="bg-black text-white px-2 py-1 rounded"
+              <Button
+                importance="secondary"
+                className="px-2 py-1"
                 onClick={() => embla?.scrollPrev()}
               >
                 &larr; Prev
-              </button>
+              </Button>
           </div>
           <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
-              <button
-                className="bg-black text-white px-2 py-1 rounded"
+              <Button
+                importance="secondary"
+                className="px-2 py-1"
                 onClick={() => embla?.scrollNext()}
               >
                 Next &rarr;
-              </button>
+              </Button>
           </div>
         </>
      )}
