@@ -1,8 +1,9 @@
 import CustomLink from "@/components/interactions/CustomLink";
+import Section from "@/components/grids/Section";
 
 export default function Footer() {
   return (
-    <div className="
+    <Section className="
       max-w-5xl
       mx-auto
       p-4
@@ -42,6 +43,6 @@ export default function Footer() {
           </CustomLink>
         </span>
       </p>
-    </div>
+    </Section>
   );
 }
