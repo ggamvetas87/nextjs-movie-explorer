@@ -37,7 +37,6 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
         </div>
       </Link>
       <CustomLink
-        href="#"
         onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             e.preventDefault();
             toggleFavorite(movie);

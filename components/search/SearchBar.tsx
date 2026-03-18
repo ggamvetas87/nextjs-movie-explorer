@@ -37,8 +37,8 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
     };
 
     return (
-        <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-sm p-4">
-            <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+        <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-sm pt-0 pr-0 pb-[2px] pl-0">
+            <form onSubmit={handleSubmit} className="flex gap-2 mt-3 mb-5">
                 <Textbox
                     styles={{
                         input: "border p-2 rounded w-full"
@@ -47,7 +47,7 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
                     onChange={(value) => setQuery(value)}
                     placeholder="Search movies..."
                 />
-                <Button type="submit">
+                <Button type="submit" disabled={query.trim() === "" || loading}>
                     Search
                 </Button>
             </form>

@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import CustomLink from "@/components/interactions/CustomLink";
-import Section from "@/components/grids/Section";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

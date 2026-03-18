@@ -9,7 +9,7 @@ export default function CustomLink({
     onClick,
     children
 }: { 
-    href: string;
+    href?: string;
     target?: string;
     type?: "link" | "button";
     className?: string;
@@ -23,8 +23,9 @@ export default function CustomLink({
     
     return (
         <Link 
-            target={target} 
-            href={href} 
+            target={target}
+            href={href ?? "#"} 
+            rel={target === "_blank" ? "noopener noreferrer" : undefined}
             className={twMerge(baseClasses, cssClasses, className)}
             onClick={onClick}
             aria-label={typeof children === "string" ? children : undefined}
