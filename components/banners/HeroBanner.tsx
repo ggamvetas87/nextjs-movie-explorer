@@ -4,7 +4,10 @@ import CustomLink from "@/components/interactions/CustomLink";
 
 export default function HeroBanner({ movie }: { movie: MovieListItem }) {
   return (
-    <div className="flex-[0_0_100%] relative">
+    <div 
+      className="flex-[0_0_100%] relative"
+      style={{ background: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))" }}
+    >
       <Image
         src={movie["#IMG_POSTER"]}
         alt={movie["#TITLE"]}
@@ -13,7 +16,7 @@ export default function HeroBanner({ movie }: { movie: MovieListItem }) {
         height={550}
       />
       <div className="absolute bottom-8 left-8 text-white">
-        <h2 className="text-4xl font-bold">
+        <h2 className="text-4xl font-bold bg-black bg-opacity-45 px-3 py-2 rounded">
           {movie["#TITLE"]}
         </h2>
         <p>{movie["#YEAR"]}</p>
