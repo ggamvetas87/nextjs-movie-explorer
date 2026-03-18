@@ -15,7 +15,13 @@ export default function Footer() {
       text-white
     ">
       <div className="w-auto md:w-6/12 lg:w-6/12">
-        <h4 className="text-3xl font-bold">Popcornia</h4>
+        <div className="flex items-center gap-1">
+          <h4 className="text-2xl font-bold">Popcornia</h4>
+          | 
+          <CustomLink href="/disclaimer" className="mt-1">
+            Disclaimer
+          </CustomLink>
+        </div>
         <p className="mt-1">Your ultimate movie exploration platform</p>
       </div>
       <p className="
