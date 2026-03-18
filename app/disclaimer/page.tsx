@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import CustomLink from "@/components/interactions/CustomLink";
+import Section from "@/components/grids/Section";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -51,7 +52,7 @@ export default async function DisclaimerPage() {
 
             <h3 className="text-2xl font-bold mb-2">No Warranty</h3>
             <p className="mb-10">
-                <span className="text-red-500 font-bold">Popcornia</span> is provided 'as is' without any warranties, express or implied. 
+                <span className="text-red-500 font-bold">Popcornia</span> is provided as-is without any warranties, express or implied. 
                 The developers do not guarantee functionality, reliability, or availability.
             </p>
         </div>
