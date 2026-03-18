@@ -1,10 +1,9 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation'
 import Image from "next/image";
 import { getMovie } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
 import VideoPlayer from "@/components/media/VideoPlayer";
-import NotFound from "@/components/partial/NotFound";
-import Footer from '@/components/partial/Footer';
 import { Person } from "@/types/movies";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
@@ -31,7 +30,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   const movie = data?.short;
 
   if (!movie) {
-    return <NotFound />;
+    return notFound();
   }
 
   return (
@@ -57,7 +56,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
 
         <div className="md:w-2/3">
           <h1 className="text-3xl font-bold">{movie?.name}</h1>
-          <p className="mt-2"><strong>Content Rating:</strong> {movie?.contentRating} - {movie?.aggregateRating?.ratingValue}</p>
+          <p className="mt-2"><strong>Content Rating:</strong> {movie?.contentRating} - {movie?.aggregateRating?.ratingValue} &#9733;</p>
           {movie?.duration && <p className="mt-2"><strong>Duration:</strong> {movie.duration.replace("PT", "").replace("H", "h ").replace("M", "m")}</p>}
           <p className="mt-0"><strong>Categories:</strong> {movie?.genre?.join(", ")}</p>
           <p className="mt-4">{movie?.description}</p>
@@ -123,7 +122,6 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           />
         </div>
       )}
-      <Footer />
     </>
   );
 }

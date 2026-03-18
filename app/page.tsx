@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
-import SearchBar from "@/components/SearchBar";
-import MovieRow from "@/components/MovieRow";
+import SearchBar from "@/components/search/SearchBar";
+import MovieRow from "@/components/grids/MovieRow";
 import HeroCarousel from "@/components/sliders/HeroCarousel";
-import MoviesGrid from "@/components/MoviesGrid";
-import Footer from "@/components/partial/Footer";
+import SearchResults from "@/components/search/SearchResults";
 import { searchMovies } from "@/lib/api";
 import { loadMovies } from "@/lib/helpers";
 import { MovieListItem } from "@/types/movies";
@@ -60,7 +59,7 @@ export default function Home() {
       </h1>
 
       <SearchBar onSearch={handleSearch} />
-      {movies && <MoviesGrid movies={movies} />}
+      {movies && <SearchResults movies={movies} />}
     
       {!movies.length && !loading && (
         <div>
@@ -77,7 +76,6 @@ export default function Home() {
           </div>
         </div>
       )}
-      <Footer />
     </div>
   );
 }

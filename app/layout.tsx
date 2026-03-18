@@ -4,6 +4,7 @@ import "./globals.css";
 import Image from "next/image";
 import Link from "next/link";
 import { MoviesProvider } from "@/context/MoviesContext";
+import Footer from "@/components/partial/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,16 +40,12 @@ export default function RootLayout({
               max-w-5xl
               mx-auto
               p-2
-              sm:p-4
-              md:p-6
-              lg:p-6
+              sm:p-4 md:p-6 lg:p-6
               flex
               flex-col
               md:flex-row
               gap-4
-              sm:gap-4
-              md:gap-6
-              lg:gap-6
+              sm:gap-4 md:gap-6 lg:gap-6
               items-center
           ">
             <Link href="/" className="flex items-center gap-4">
@@ -62,6 +59,7 @@ export default function RootLayout({
         </div>
         <MoviesProvider>
           {children}
+          <Footer />
         </MoviesProvider>
       </body>
     </html>
