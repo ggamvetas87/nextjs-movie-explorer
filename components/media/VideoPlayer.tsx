@@ -17,7 +17,15 @@ export default function VideoPlayer({
     thumbnaillUrl,
     className
 }: VideoPlayerProps) {
-    const previewImage = thumbnaillUrl && <Image src={"https://placehold.co/600x400/png"} alt={title || "Video thumbnail"} className="w-full h-auto" />;
+    const previewImage = thumbnaillUrl && (
+        <Image
+            src={thumbnaillUrl}
+            alt={title || "Video thumbnail"}
+            className="w-full h-auto"
+            width={600}
+            height={400}
+        />
+    );
 
     return (
         <div className={twMerge("w-full mx-auto", className)}>

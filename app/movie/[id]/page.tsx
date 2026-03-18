@@ -116,8 +116,10 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           </div>
           <VideoPlayer 
             url={movie?.trailer?.url}
+            // url="https://www.youtube.com/watch?v=gul5c2CYGQ4"
             title={movie?.trailer?.name}
-            thumbnaillUrl={movie?.trailer?.thumbnaillUrl}
+            // thumbnaillUrl={movie?.trailer?.thumbnaillUrl}
+            thumbnaillUrl="/assets/popcorn-background.jpg"
             className="max-w-3xl"
           />
         </div>
