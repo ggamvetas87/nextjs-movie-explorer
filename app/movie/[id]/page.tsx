@@ -106,7 +106,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
       </div>
 
       {movie?.trailer?.url && (
-        <div className="max-w-3xl mx-auto p-6 gap-6">
+        <div className="max-w-5xl mx-auto p-6 gap-6">
           <div>
             <h4 className="text-2xl font-bold mb-4 text-center">
               {movie?.trailer?.name}
@@ -119,6 +119,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
             url={movie?.trailer?.url}
             title={movie?.trailer?.name}
             thumbnaillUrl={movie?.trailer?.thumbnaillUrl}
+            className="max-w-3xl"
           />
         </div>
       )}
