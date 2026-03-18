@@ -37,14 +37,14 @@ export default function SearchBar({ onSearch }: { onSearch: (query: string) => P
     };
 
     return (
-        <div>
+        <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-sm p-4">
             <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
                 <Textbox
                     styles={{
                         input: "border p-2 rounded w-full"
                     }}
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(value) => setQuery(value)}
                     placeholder="Search movies..."
                 />
                 <Button type="submit">

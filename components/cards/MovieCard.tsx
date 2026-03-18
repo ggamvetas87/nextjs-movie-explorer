@@ -12,7 +12,7 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
   );
 
   return (
-    <>
+    <div className="relative">
       <Link href={`/movie/${movie["#IMDB_ID"]}`}>
         <div className="p-3 hover:shadow group cursor-pointer">
           {movie["#IMG_POSTER"] && (
@@ -46,6 +46,6 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
       >
         {isFavorite ? "❤️" : "🤍"} Favorite
       </CustomLink>
-    </>
+    </div>
   );
 }
