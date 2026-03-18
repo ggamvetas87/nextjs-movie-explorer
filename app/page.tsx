@@ -7,6 +7,7 @@ import SearchBar from "@/components/SearchBar";
 import MovieRow from "@/components/MovieRow";
 import HeroCarousel from "@/components/sliders/HeroCarousel";
 import MoviesGrid from "@/components/MoviesGrid";
+import Footer from "@/components/partial/Footer";
 import { searchMovies } from "@/lib/api";
 import { loadMovies } from "@/lib/helpers";
 import { MovieListItem } from "@/types/movies";
@@ -76,6 +77,7 @@ export default function Home() {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }

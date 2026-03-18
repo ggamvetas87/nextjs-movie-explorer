@@ -10,18 +10,18 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer({ url, title, thumbnaillUrl }: VideoPlayerProps) {
-    const previewImage = thumbnaillUrl && <Image src={thumbnaillUrl} alt={title || "Video thumbnail"} className="w-full h-auto" />;
+    const previewImage = thumbnaillUrl && <Image src={"https://placehold.co/600x400/png"} alt={title || "Video thumbnail"} className="w-full h-auto" />;
 
     return (
         <div className="w-full max-w-3xl mx-auto">
-        <ReactPlayer
-            playing={false}
-            light={thumbnaillUrl}
-            controls
-            width="100%"
-            height="360px"
-            url={url}
-        />
+            <ReactPlayer
+                playing={false}
+                light={previewImage}
+                controls
+                width="100%"
+                height="360px"
+                src={url}
+            />
         </div>
     );
 }

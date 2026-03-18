@@ -11,3 +11,11 @@ export type MovieListItem = {
     "photo_width": number;
     "photo_height": number
 };
+
+export type Person = {
+    type: string;
+    url: string;
+    name: string;
+};
+
+export type Category = string;

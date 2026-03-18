@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { MovieListItem } from "@/types/movies";
-import Link from "next/link";
+import CustomLink from "@/components/interactions/CustomLink";
 
 export default function HeroBanner({ movie }: { movie: MovieListItem }) {
   return (
@@ -17,9 +17,9 @@ export default function HeroBanner({ movie }: { movie: MovieListItem }) {
           {movie["#TITLE"]}
         </h2>
         <p>{movie["#YEAR"]}</p>
-        <Link href={`/movie/${movie["#IMDB_ID"]}`} className="mt-4 inline-block bg-red-500 text-white px-4 py-2 rounded">
+        <CustomLink href={`/movie/${movie["#IMDB_ID"]}`} className="mt-4" type="button">
           View Details
-        </Link>
+        </CustomLink>
       </div>
     </div>
   );
