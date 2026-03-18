@@ -13,7 +13,7 @@ export default function CustomLink({
     target?: string;
     type?: "link" | "button";
     className?: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     children: React.ReactNode
 }) {
     const baseClasses = "cursor-pointer transition-all duration-300";

@@ -10,7 +10,7 @@ export default function Button({
     importance?: "primary" | "secondary";
     type?: "button" | "submit" | "reset";
     className?: string;
-    onClick?: () => void;
+    onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     children?: React.ReactNode
 }) {
     const baseClasses = "cursor-pointer inline-block px-4 py-1 rounded transition-all duration-300";
