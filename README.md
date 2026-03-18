@@ -1,6 +1,6 @@
 # Next.js Movie Explorer
 
-A modern movie search web app built with Next.js.
+A simple and modern demo movie search web app built with Next.js.
 
 ## Features
 
