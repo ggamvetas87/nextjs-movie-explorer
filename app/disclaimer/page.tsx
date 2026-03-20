@@ -20,8 +20,8 @@ export default async function DisclaimerPage() {
             <h2 className="text-3xl font-bold mb-2">Development Disclaimer</h2>
             <p className="mb-10">
                 This application is for educational and entertainment purposes only. 
-                It uses the IMDb API to fetch movie data, but it is not affiliated with IMDb or any of its parent companies. 
-                The content provided in this app is sourced from IMDb and may be subject to inaccuracies or changes. 
+                It uses the <CustomLink href="https://developer.themoviedb.org/docs/getting-started" target="_blank">TMDB API</CustomLink> to fetch movie data, but it is not affiliated with TMDB or any of its parent companies. 
+                The content provided in this app is sourced from TMDB and may be subject to inaccuracies or changes. 
                 Users should verify information from official sources before making any decisions based on the data presented here.
             </p>
             
