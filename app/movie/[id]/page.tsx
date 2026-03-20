@@ -76,7 +76,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
             <Image 
               src={`${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}`}
               alt={movie.title} 
-              className="mb-4"
+              className="mb-4 rounded"
               width={300}
               height={600}
             />
@@ -85,8 +85,8 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
 
         <div className="md:w-2/3">
           <h2 className="text-3xl font-bold">{movie?.title}</h2>
-          <p className="mt-2"><strong>Rating:</strong> <span className="text-2xl text-red-500">&#9733;</span> {movie?.vote_average.toFixed(1)}</p>
-          {movie?.runtime && <p className="mt-2"><strong>Duration:</strong> {formatRuntime(movie.runtime)}</p>}
+          {movie?.vote_average > 0 && <p className="mt-2"><strong>Rating:</strong> <span className="text-2xl text-red-500">&#9733;</span> {movie.vote_average.toFixed(1)}</p>}
+          {movie?.runtime > 0 && <p className="mt-2"><strong>Duration:</strong> {formatRuntime(movie.runtime)}</p>}
           {movie?.genres && <p className="mt-0"><strong>Categories:</strong> {renderCategories(movie.genres)}</p>}
           {movie?.release_date && <p className="mt-2"><strong>Release Date:</strong> {new Date(movie.release_date).toLocaleDateString()}</p>}
           <p className="mt-4">{movie?.overview}</p>
