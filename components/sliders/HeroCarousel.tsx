@@ -43,13 +43,13 @@ export default function HeroCarousel({
     <div className="overflow-hidden mb-10 relative" ref={emblaRef}>
       <div className="flex">
         {movies.slice(0,count).map((movie) => (
-          <HeroBanner key={movie["#IMDB_ID"]} movie={movie} />
+          <HeroBanner key={movie.id} movie={movie} />
         ))}
       </div>
       {showDots && <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {movies.slice(0,count).map((movie, index) => (
           <Button
-            key={movie["#IMG_POSTER"]}
+            key={movie.id}
             className={`
               w-3 h-3 rounded-full transition
               ${index === selectedIndex

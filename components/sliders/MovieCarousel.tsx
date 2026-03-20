@@ -64,7 +64,7 @@ export default function MovieCarousel({
     <div className="overflow-hidden mb-10 relative" ref={emblaRef}>
       <div className="flex">
         {movies.slice(0,count).map((movie) => (
-          <div key={movie["#IMDB_ID"]} className="
+          <div key={movie.id} className="
             flex-[0_0_80%]
             sm:flex-[0_0_50%]
             md:flex-[0_0_33%]
@@ -77,7 +77,7 @@ export default function MovieCarousel({
       {showDots && <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {movies.slice(0,count).map((movie, index) => (
           <Button
-            key={movie["#IMG_POSTER"]}
+            key={movie.id}
             importance="secondary"
             className={`
                 w-3 h-3 rounded-full transition

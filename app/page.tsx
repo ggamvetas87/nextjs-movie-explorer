@@ -8,8 +8,7 @@ import MovieRow from "@/components/grids/MovieRow";
 import HeroCarousel from "@/components/sliders/HeroCarousel";
 import MovieCarousel from "@/components/sliders/MovieCarousel";
 import SearchResults from "@/components/search/SearchResults";
-import { searchMovies } from "@/lib/api";
-import { loadMovies } from "@/lib/helpers";
+import { searchMovies, getTrendingMovies, getMovieTagList } from "@/lib/api";
 import { MovieListItem } from "@/types/movies";
 
 export default function Home() {
@@ -19,13 +18,13 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(false);
   const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
   const [trending, setTrending] = useState<MovieListItem[] | null>(null);
-  const [popular, setPopular] = useState<MovieListItem[] | null>(null);
+  const [upcoming, setUpcoming] = useState<MovieListItem[] | null>(null);
 
   useEffect(() => {
-    // Load initial data for hero banners, trending and popular sections
-    loadMovies("Lethal Weapon", 1, 4).then(setHeroBanners);
-    loadMovies("Comedy", 1, 8).then(setTrending);
-    loadMovies("Adventure", 1, 8).then(setPopular);
+    // Load initial data for hero banners, trending and upcoming sections
+    getMovieTagList("popular").then(setHeroBanners);
+    getTrendingMovies().then(setTrending);
+    getMovieTagList("upcoming").then(setUpcoming);
   }, []);
 
   async function handleSearch(newQuery: string) {
@@ -64,16 +63,16 @@ export default function Home() {
     
       {!movies.length && !loading && (
         <div>
-          {heroBanners && <HeroCarousel movies={heroBanners} />}
+          {heroBanners && <HeroCarousel movies={heroBanners} count={6} />}
           <div>
             {trending && (
               <MovieRow title="Trending">
-                <MovieCarousel movies={trending} />
+                <MovieCarousel movies={trending} count={20} />
               </MovieRow>
             )}
-            {popular && (
-              <MovieRow title="Popular">
-                <MovieCarousel movies={popular} />
+            {upcoming && (
+              <MovieRow title="Upcoming">
+                <MovieCarousel movies={upcoming} count={20} />
               </MovieRow>
             )}
           </div>

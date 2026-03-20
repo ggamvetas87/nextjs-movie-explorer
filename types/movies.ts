@@ -1,15 +1,15 @@
 export type MovieListItem = {
-    "#IMDB_ID": string;
-    "#TITLE": string;
-    "#YEAR": string;
-    "#RANK": number;
-    "#ACTORS": string;
-    "#AKA": string;
-    "#IMDB_URL": string;
-    "#IMDB_IV": string;
-    "#IMG_POSTER": string;
-    "photo_width": number;
-    "photo_height": number
+    id: string;
+    title: string;
+    overview: string;
+    release_date: string;
+    poster_path: string;
+    backdrop_path?: string;
+    popularity: number;
+    genre_ids: number[];
+    vote_average: number;
+    vote_counts: number;
+    adult: boolean;
 };
 
 export type Person = {
@@ -19,3 +19,16 @@ export type Person = {
 };
 
 export type Category = string;
+
+export type Video = {
+    iso_639_1: string;
+    iso_3166_1: string;
+    name: string;
+    key: string;
+    site: string;
+    size: number;
+    type: string;
+    official: boolean;
+    published_at: string;
+id: string;
+};
