@@ -7,7 +7,8 @@ export default function Textbox({
   type = "text",
   placeholder,
   styles,
-  onChange
+  onChange,
+  onClear
 }: {
   label?: string;
   value: string;
@@ -19,6 +20,7 @@ export default function Textbox({
     label?: string;
   };
   onChange: (val: string) => void;
+  onClear?: (val: string) => void;
 }) {
   return (
     <div className={twMerge("w-full", styles?.container)}>
@@ -34,7 +36,7 @@ export default function Textbox({
         {value && (
           <Button
             importance="tertiary"
-            onClick={() => onChange("")}
+            onClick={() => onClear?.("")}
             className="absolute right-2 top-1/2 -translate-y-1/2 px-0"
           >
             ✕ clear

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       new URL('https://m.media-amazon.com/images/M/**'),
-      new URL('https://image.tmdb.org/t/p/**'),
+      new URL('https://image.tmdb.org/t/p/**')
     ],
   },
 };

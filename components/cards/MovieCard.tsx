@@ -10,14 +10,15 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
   const isFavorite = favorites.find(
     (m) => m.id === movie.id
   );
+  const posterUrl = `${movie?.poster_path ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}` : "/assets/no-image-placeholder.png"}`;
 
   return (
     <div className="relative">
       <Link href={`/movie/${movie.id}`}>
         <div className="p-3 hover:shadow group cursor-pointer">
-          {movie?.poster_path && (
+          {posterUrl && (
             <Image
-              src={`${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie?.poster_path}`}
+              src={posterUrl}
               alt={movie?.title}
               className="
                 w-full 
@@ -31,9 +32,8 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
               height={300}
             />
           )}
-
           <h3 className="font-bold">{movie?.title}</h3>
-          <p>{new Date(movie?.release_date).toLocaleDateString()}</p>
+          <p>{movie?.release_date && new Date(movie.release_date).toLocaleDateString()}</p>
         </div>
       </Link>
       <CustomLink

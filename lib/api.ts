@@ -5,12 +5,12 @@ export function getBaseUrl() {
 
 const BASE_URL = getBaseUrl();
 
-export async function searchMovies(query: string, page: number = 1, limit: number = 20) {
+export async function searchMovies(query: string, page: number = 1, limit: number = 99999) {
   const controller = new AbortController();
   const signal = controller.signal;
 
   const res = await fetch(
-    `${BASE_URL}/api/movie/search/${query}?page=${page}&limit=${limit}`,
+    `${BASE_URL}/api/movie/search/${query}?page=${page}`,
     { signal }
   );
 

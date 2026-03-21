@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import SearchBar from "@/components/search/SearchBar";
@@ -14,7 +15,13 @@ import { MovieListItem } from "@/types/movies";
 export default function Home() {
   const { loading, movies, setMovies, query, setQuery } = useMovies();
 
-  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const initialPage = Number(searchParams.get("page") || 1);
+  const initialQuery = searchParams.get("query") || "";
+
+  const [page, setPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(false);
   const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
   const [trending, setTrending] = useState<MovieListItem[] | null>(null);
@@ -27,29 +34,86 @@ export default function Home() {
     getMovieTagList("upcoming").then(setUpcoming);
   }, []);
 
+  useEffect(() => {
+    if (!initialQuery) return;
+
+    async function init() {
+      let allMovies: MovieListItem[] = [];
+
+      for (let i = 1; i <= initialPage; i++) {
+        const data = await searchMovies(initialQuery, i);
+        allMovies = [...allMovies, ...data.movies];
+      }
+
+      setQuery(initialQuery);
+      setMovies(allMovies);
+      setHasMore(true);
+    }
+
+    init();
+  }, []);
+
+  // Update URL with new query and page without causing a full page reload
+  function updateUrl(newQuery: string, newPage: number) {
+    const params = new URLSearchParams();
+
+    if (newQuery) params.set("query", newQuery);
+    params.set("page", newPage.toString());
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }
+
+  // Clear query and page from URL when search is cleared
+  function clearSearchFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+
+    params.delete("query");
+    params.delete("page");
+
+    const newUrl = params.toString() ? `?${params.toString()}` : "/";
+
+    router.replace(newUrl, { scroll: false });
+  }
+
+  function onTextboxClear(value?: string) {
+    clearSearchFromUrl();
+  }
+
+  // Handle new search queries
   async function handleSearch(newQuery: string) {
+    const trimmedQuery = newQuery.trim();
+
+    if (!trimmedQuery) {
+      clearSearchFromUrl();
+      return;
+    }
+
     setPage(1);
     setQuery(newQuery);
 
-    const data = await searchMovies(newQuery, 1, 4);
+    updateUrl(newQuery, 1);
+    const data = await searchMovies(newQuery, 1);
 
     setMovies(data.movies);
     setHasMore(data.hasMore);
   }
-
+  
+  // Load more movies when user scrolls to the bottom
   async function loadMoreMovies() {
     if (!hasMore) return;
 
     const nextPage = page + 1;
-    const data = await searchMovies(query, nextPage, 4);
+    const data = await searchMovies(query, nextPage);
 
     setMovies([...movies, ...data.movies]);
     setPage(nextPage);
     setHasMore(data.hasMore);
+    updateUrl(query, nextPage);
   }
 
+  // Automatically load more movies when user scrolls to the bottom
   useInfiniteScroll(() => {
-    loadMoreMovies();
+    if (query) loadMoreMovies();
   });
 
   return (
@@ -58,7 +122,10 @@ export default function Home() {
         Movie Explorer
       </h1>
 
-      <SearchBar onSearch={handleSearch} />
+      <SearchBar 
+        onSearch={handleSearch} 
+        onClear={onTextboxClear}
+      />
       {movies && <SearchResults movies={movies} />}
     
       {!movies.length && !loading && (

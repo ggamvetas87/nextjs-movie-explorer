@@ -10,7 +10,6 @@ export async function GET(
   const language = searchParams.get("language") || "en-US";
   const includeAdult = searchParams.get("includeAdult") === "true";
   const page = Number(searchParams.get("page") || 1);
-  const limit = Number(searchParams.get("limit") || 8);
 
   if (!query) {
     return Response.json({ error: "Missing query" }, { status: 400 });
@@ -29,11 +28,8 @@ export async function GET(
   const data = await res.json();
   const movies = data.results || [];
 
-  // const start = (page - 1) * limit;
-  // const end = start + limit;
-
   return Response.json({
-    // results: movies.slice(start, end),
+    page,
     results: movies,
     totalResults: data.total_results,
     hasMore: page < data.total_pages
