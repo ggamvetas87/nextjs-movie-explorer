@@ -10,7 +10,7 @@ import HeroCarousel from "@/components/sliders/HeroCarousel";
 import MovieCarousel from "@/components/sliders/MovieCarousel";
 import SearchResults from "@/components/search/SearchResults";
 import { searchMovies, getTrendingMovies, getMovieTagList } from "@/lib/api";
-import { MovieListItem } from "@/types/movies";
+import { MovieListItem } from "@/types/thmdb";
 
 export default function Home() {
   const { loading, movies, setMovies, query, setQuery } = useMovies();
@@ -22,6 +22,7 @@ export default function Home() {
   const initialQuery = searchParams.get("query") || "";
 
   const [page, setPage] = useState(initialPage);
+  const [totalResults, setTotalResults] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
   const [trending, setTrending] = useState<MovieListItem[] | null>(null);
@@ -96,6 +97,7 @@ export default function Home() {
 
     setMovies(data.movies);
     setHasMore(data.hasMore);
+    setTotalResults(data.totalResults);
   }
   
   // Load more movies when user scrolls to the bottom
@@ -108,6 +110,7 @@ export default function Home() {
     setMovies([...movies, ...data.movies]);
     setPage(nextPage);
     setHasMore(data.hasMore);
+    setTotalResults(data.totalResults);
     updateUrl(query, nextPage);
   }
 
@@ -126,7 +129,12 @@ export default function Home() {
         onSearch={handleSearch} 
         onClear={onTextboxClear}
       />
-      {movies && <SearchResults movies={movies} />}
+      {movies && <SearchResults 
+        query={query} 
+        movies={movies}
+        page={page}
+        totalResults={totalResults} 
+      />}
     
       {!movies.length && !loading && (
         <div>

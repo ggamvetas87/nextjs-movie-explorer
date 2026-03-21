@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import useFavorites from "@/hooks/useFavorites";
 import CustomLink from "@/components/interactions/CustomLink";
-import { MovieListItem } from "@/types/movies";
+import { MovieListItem } from "@/types/thmdb";
 
 export default function MovieCard({ movie }: { movie: MovieListItem }) {
   const { favorites, toggleFavorite } = useFavorites();

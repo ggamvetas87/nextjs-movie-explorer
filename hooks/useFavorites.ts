@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MovieListItem } from "@/types/movies";
+import { MovieListItem } from "@/types/thmdb";
 
 export default function useFavorites() {
   const [favorites, setFavorites] = useState<MovieListItem[]>(() => {
@@ -10,8 +10,8 @@ export default function useFavorites() {
   function toggleFavorite(movie: MovieListItem) {
     let updated;
 
-    if (favorites.some((m) => m["#IMDB_ID"] === movie["#IMDB_ID"])) {
-      updated = favorites.filter((m) => m["#IMDB_ID"] !== movie["#IMDB_ID"]);
+    if (favorites.some((m) => m.id === movie.id)) {
+      updated = favorites.filter((m) => m.id !== movie.id);
     } else {
       updated = [...favorites, movie];
     }

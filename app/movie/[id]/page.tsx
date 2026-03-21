@@ -5,9 +5,15 @@ import { getMovie, getSimilarMovies } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
 import VideoPlayer from "@/components/media/VideoPlayer";
 import MovieCarousel from '@/components/sliders/MovieCarousel';
+import PersonCarousel from '@/components/sliders/PersonCarousel';
 import Section from '@/components/grids/Section';
-import { renderCategories, formatRuntime, getVideosByType } from "@/lib/helpers";
-import { Person } from "@/types/movies";
+import { 
+  // renderCategories,
+  formatRuntime,
+  getVideosByType,
+  getActors,
+  getCrewByJob
+} from "@/lib/helpers";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const { id } = await params;
@@ -28,11 +34,21 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
 export default async function MoviePage({ params }: { params: { id: string } }) {
   const { id } = await params;
-  const movie = await getMovie(id, "videos");
+  const movie = await getMovie(id, "credits,videos");
   const posterUrl = `${movie?.poster_path ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}` : "/assets/no-image-placeholder.png"}`;
+  const cast = movie?.credits?.cast || [];
+  const crew = movie?.credits?.crew || [];
+  const actors = getActors(cast, 10);
+  const directors = getCrewByJob({ data: crew, limit: 5, role: "Director" });
 
   if (!movie) {
     return notFound();
+  }
+
+  function renderCategories(categories: { id: number; name: string }[]) {
+    if (!categories || categories.length === 0) return null;
+
+    return categories.map(category => <span key={category.id} className="text-sm bg-red-500 text-white rounded px-1 mr-2">{category.name}</span>);
   }
 
   const renderVideo = () => {
@@ -50,7 +66,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           url={`https://www.youtube.com/watch?v=${video.key}`}
           title={video?.name}
           thumbnaillUrl={`${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.backdrop_path}`}
-          className="max-w-3xl"
+          className="max-w-5xl"
         />
       </div>
     )};
@@ -97,27 +113,19 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           {movie?.release_date && <p className="mt-2"><strong>Release Date:</strong> {new Date(movie.release_date).toLocaleDateString()}</p>}
           <p className="mt-4">{movie?.overview}</p>
 
-          {movie?.actor?.length > 0 && (
+          {actors.length > 0 && (
             <div className="mt-4">
               <h4 className="text-xl font-semibold mb-2">Starring:</h4>
-              <ul className="list-disc list-inside">
-                {movie.actor.map((actor: Person, index: number) => (
-                  <li key={index}>
-                    <CustomLink target="_blank" href={actor?.url ?? "#"}>
-                      {actor.name} {actor?.url && <span>&rarr;</span>}
-                    </CustomLink>
-                  </li>
-                ))}
-              </ul>
+              <PersonCarousel people={actors} count={10} />
             </div>
           )}
 
-          {movie?.director?.length > 0 && (
+          {directors.length > 0 && (
             <div className="mt-4">
               <h4 className="text-xl font-semibold mb-2">Directors:</h4>
               <ul className="list-disc list-inside">
-                {movie.director.map((director: Person, index: number) => (
-                  <li key={index}>
+                {directors.map(director => (
+                  <li key={director.id}>
                     <CustomLink target="_blank" href={director?.url ?? "#"}>
                       {director.name} {director?.url && <span>&rarr;</span>}
                     </CustomLink>
@@ -130,7 +138,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           <p>
             <CustomLink 
               target="_blank"
-              href={`https://www.imdb.com/title/${movie?.imdb_id}`}
+              href={`https://www.themoviedb.org/movie/${movie?.id}`}
               type="button"
               className="mt-6"
             >

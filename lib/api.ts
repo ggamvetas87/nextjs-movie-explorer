@@ -22,7 +22,8 @@ export async function searchMovies(query: string, page: number = 1, limit: numbe
 
   return {
     movies: data.results ? data.results.slice(0, limit) : [],
-    hasMore: data.hasMore
+    totalResults: data.totalResults ?? 0,
+    hasMore: data.hasMore ?? false
   };
 }
 

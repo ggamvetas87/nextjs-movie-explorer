@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useMemo } from "react";
-import { MovieListItem } from "@/types/movies";
+import { MovieListItem } from "@/types/thmdb";
 
 type MoviesContextType = {
   movies: MovieListItem[];

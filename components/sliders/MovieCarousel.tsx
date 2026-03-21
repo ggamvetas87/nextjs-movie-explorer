@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Button from "@/components/interactions/Button";
 import MovieCard from "@/components/cards/MovieCard";
-import { MovieListItem } from "@/types/movies";
+import { MovieListItem } from "@/types/thmdb";
 
 export default function MovieCarousel({ 
     movies,

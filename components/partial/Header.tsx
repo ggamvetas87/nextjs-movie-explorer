@@ -21,7 +21,13 @@ export default function Header() {
             items-center
         ">
             <Link href="/" className="flex items-center gap-4">
-              <Image src="/assets/popcornia-logo.jpg" alt="Popcornia logo" width={64} height={64} />
+              <Image 
+                src="/assets/popcornia-logo.jpg" 
+                alt="Popcornia logo" 
+                className="rounded-full"
+                width={64} 
+                height={64}
+              />
               <div>
                 <h1 className="text-4xl font-bold text-white text-shadow:_0_0_0.5px_black">Popcornia</h1>
                 <h4 className="text-lg text-white text-shadow:_0_0_0.5px_black">Evokes popcorn and fun movie browsing</h4>
