@@ -1,5 +1,8 @@
+"use client";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "next-auth/react"
 import "./globals.css";
 import { MoviesProvider } from "@/context/MoviesContext";
 import Header from "@/components/partial/Header";
@@ -16,10 +19,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Popcornia – evokes popcorn and fun movie browsing",
-  description: "A Next.js app to search and explore movies using the IMDb API.",
-};
+// export const metadata: Metadata = {
+//   title: "Popcornia – evokes popcorn and fun movie browsing",
+//   description: "A Next.js app to search and explore movies using the IMDb API.",
+// };
 
 export default function RootLayout({
   children,
@@ -31,12 +34,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <MoviesProvider>
-          <Header />
-          {children}
-          <Footer />
-          <BackToTop />
-        </MoviesProvider>
+        <SessionProvider>
+          <MoviesProvider>
+            <Header />
+            {children}
+            <Footer />
+            <BackToTop />
+          </MoviesProvider>
+        </SessionProvider>
       </body>
     </html>
   );
