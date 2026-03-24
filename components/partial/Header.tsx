@@ -2,23 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Section from "@/components/grids/Section";
-import Button from "@/components/interactions/Button";
+import GithubAvatar from "@/components/media/GitHubAvatar";
+import GithubButton from "@/components/interactions/GithubButton";
 
 export default function Header() {
-  const { data: session, status } = useSession();
-
-  const isLoading = status === "loading";
-  const isAuthenticated = !!session;
-  const loginButtonText = isAuthenticated ? "Sign out" : "Sign in with GitHub";
-
-  const handleLogin = () => {
-    signIn("github", {
-      callbackUrl: window.location.href
-    });
-  };
-
   return (
     <Section
         className="mb-0"
@@ -55,23 +43,8 @@ export default function Header() {
             flex-row lg:flex-col xl:flex-col
             items-center
           ">
-            {isAuthenticated && <Image
-              src={session.user?.image ?? ""}
-              alt={session.user?.name ?? ""}
-              className="
-                w-10 lg:w-20
-                h-10 lg:h-20
-                rounded-full
-                lg:mb-3
-                mr-3 lg:mr-0
-              "
-              width={80}
-              height={80}
-            />}
-            <Button
-              onClick={!isAuthenticated ? handleLogin : () => signOut()}>
-                {isLoading ? "Loading..." : loginButtonText}
-            </Button>
+            <GithubAvatar />
+            <GithubButton />
           </div>
         </div>
     </Section>
