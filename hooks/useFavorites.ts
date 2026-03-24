@@ -3,7 +3,7 @@ import { MovieListItem } from "@/types/thmdb";
 
 export default function useFavorites() {
   const [favorites, setFavorites] = useState<MovieListItem[]>(() => {
-    const stored = localStorage.getItem("favorites");
+    const stored = localStorage?.getItem("favorites");
     return stored ? JSON.parse(stored) : [];
   });
 
@@ -11,7 +11,7 @@ export default function useFavorites() {
     let updated;
 
     if (favorites.some((m) => m.id === movie.id)) {
-      updated = favorites.filter((m) => m.id !== movie.id);
+      updated = favorites?.filter((m) => m.id !== movie.id);
     } else {
       updated = [...favorites, movie];
     }
