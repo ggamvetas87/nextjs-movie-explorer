@@ -5,16 +5,19 @@ import { useSession } from "next-auth/react";
 
 export default function useFavorites() {
   const { data: session } = useSession();
-  const [favorites, setFavorites] = useState<string[]>([]);
-
   const storageKey = (session?.user?.email || session?.user?.name) ? `favorites_${session.user.email ?? session.user?.name}` : "favorites_guest";
 
-  // Load favorites from localStorage once client-side
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    const stored = localStorage.getItem(storageKey);
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  // Update localStorage when favorites change
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const stored = localStorage.getItem(storageKey);
-    setFavorites(stored ? JSON.parse(stored) : []);
-  }, [storageKey]);
+    localStorage.setItem(storageKey, JSON.stringify(favorites));
+  }, [favorites, storageKey]);
 
   const toggleFavorite = (movieId: string) => {
     if (typeof window === "undefined") return;
