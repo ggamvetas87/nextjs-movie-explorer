@@ -10,7 +10,7 @@ interface GithubAvatarProps {
     height?: number;
 }
 
-export default function GitHubAvatar({ 
+export default function GithubAvatar({ 
     src,
     altText = "User avatar",
     width = 80,
@@ -22,7 +22,7 @@ export default function GitHubAvatar({
     return isAuthenticated && (
         <Image
             src={src ?? session.user?.image ?? ""}
-            alt={altText}
+            alt={altText ?? session.user?.name ?? "User avatar"}
             className="
                 border-2 border-solid border-white
                 w-10 lg:w-20
