@@ -1,12 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import useFavorites from "@/hooks/useFavorites";
-import CustomLink from "@/components/interactions/CustomLink";
+import ToggleFavoriteButton from "@/components/interactions/ToggleFavoriteButton";
 import { MovieListItem } from "@/types/thmdb";
 
 export default function MovieCard({ movie }: { movie: MovieListItem }) {
-  const { isFavorite, toggleFavorite } = useFavorites();
-
   const posterUrl = movie?.poster_path
     ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}`
     : "/assets/no-image-placeholder.png";
@@ -27,15 +24,7 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
         </div>
       </Link>
 
-      <CustomLink
-        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-          e.preventDefault(); // stop navigation
-          toggleFavorite(movie.id);
-        }}
-        className="mt-2 text-sm text-red-500"
-      >
-        {isFavorite(movie.id) ? "❤️ Favorite" : "🤍 Favorite"}
-      </CustomLink>
+      <ToggleFavoriteButton id={movie.id} />
     </div>
   );
 }
