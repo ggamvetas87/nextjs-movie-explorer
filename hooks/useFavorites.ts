@@ -1,28 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function useFavorites() {
-  const { data: session } = useSession();
-  const storageKey = (session?.user?.email || session?.user?.name) ? `favorites_${session.user.email ?? session.user?.name}` : "favorites_guest";
+  const { data: session, status } = useSession();
+  const [favorites, setFavorites] = useState<string[]>([]);
 
-  const [favorites, setFavorites] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    const stored = localStorage.getItem(storageKey);
-    return stored ? JSON.parse(stored) : [];
-  });
+  // storageKey is derived from session status and user info to ensure each user has their own favorites list, while guests share a common list
+  const storageKey = status === "authenticated" && session?.user
+    ? `favorites_${session.user.email ?? session.user.name}`
+    : "favorites_guest";
 
-  // Update localStorage when favorites change
+  // Load favorites from localStorage once session is ready
   useEffect(() => {
     if (typeof window === "undefined") return;
-    localStorage.setItem(storageKey, JSON.stringify(favorites));
-  }, [favorites, storageKey]);
+    const stored = localStorage.getItem(storageKey);
+    setFavorites(stored ? JSON.parse(stored) : []);
+  }, [storageKey]);
 
   const toggleFavorite = (movieId: string) => {
     if (typeof window === "undefined") return;
 
-    // Always read latest from localStorage
+    // Read latest from localStorage
     const stored = localStorage.getItem(storageKey);
     const current: string[] = stored ? JSON.parse(stored) : [];
 

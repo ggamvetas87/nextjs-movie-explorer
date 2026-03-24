@@ -16,7 +16,7 @@ export default function GithubButton() {
         });
     };
 
-    return isAuthenticated && (
+    return (
         <Button
             onClick={!isAuthenticated ? handleLogin : () => signOut()}>
             {isLoading ? "Loading..." : loginButtonText}
