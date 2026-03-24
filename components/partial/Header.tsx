@@ -1,12 +1,14 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import Section from "@/components/grids/Section";
 import GithubAvatar from "@/components/media/GitHubAvatar";
 import GithubButton from "@/components/interactions/GithubButton";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+
   return (
     <Section
       className="mb-0"
@@ -43,8 +45,8 @@ export default function Header() {
           flex-row lg:flex-col xl:flex-col
           items-center
         ">
-          <GithubAvatar />
-          <GithubButton />
+          <GithubAvatar session={session} />
+          <GithubButton session={session} />
         </div>
       </div>
     </Section>

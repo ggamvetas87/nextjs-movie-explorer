@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 interface GithubAvatarProps {
+    session: ReturnType<typeof useSession>["data"];
     src?: string;
     altText?: string;
     width?: number;
@@ -11,12 +12,12 @@ interface GithubAvatarProps {
 }
 
 export default function GithubAvatar({ 
+    session,
     src,
     altText = "User avatar",
     width = 80,
     height = 80
 }: GithubAvatarProps) {
-    const { data: session } = useSession();
     const isAuthenticated = !!session;
 
     return isAuthenticated && (

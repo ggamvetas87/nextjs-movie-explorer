@@ -3,8 +3,12 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@/components/interactions/Button";
 
-export default function GithubButton() {
-    const { data: session, status } = useSession();
+export default function GithubButton({
+    session
+}: {
+    session: ReturnType<typeof useSession>["data"];
+}) {
+    const { status } = useSession();
 
     const isLoading = status === "loading";
     const isAuthenticated = !!session;
