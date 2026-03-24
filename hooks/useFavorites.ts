@@ -1,24 +1,37 @@
-import { useState } from "react";
-import { MovieListItem } from "@/types/thmdb";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function useFavorites() {
-  const [favorites, setFavorites] = useState<MovieListItem[]>(() => {
-    const stored = localStorage?.getItem("favorites");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const { data: session } = useSession();
+  const [favorites, setFavorites] = useState<string[]>([]);
 
-  function toggleFavorite(movie: MovieListItem) {
-    let updated;
+  const storageKey = (session?.user?.email || session?.user?.name) ? `favorites_${session.user.email ?? session.user?.name}` : "favorites_guest";
 
-    if (favorites.some((m) => m.id === movie.id)) {
-      updated = favorites?.filter((m) => m.id !== movie.id);
-    } else {
-      updated = [...favorites, movie];
-    }
+  // Load favorites from localStorage once client-side
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = localStorage.getItem(storageKey);
+    setFavorites(stored ? JSON.parse(stored) : []);
+  }, [storageKey]);
 
+  const toggleFavorite = (movieId: string) => {
+    if (typeof window === "undefined") return;
+
+    // Always read latest from localStorage
+    const stored = localStorage.getItem(storageKey);
+    const current: string[] = stored ? JSON.parse(stored) : [];
+
+    const updated = current.includes(movieId)
+      ? current.filter(id => id !== movieId)
+      : [...current, movieId];
+
+    localStorage.setItem(storageKey, JSON.stringify(updated));
     setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  }
+  };
 
-  return { favorites, toggleFavorite };
+  const isFavorite = (movieId: string) => favorites.includes(movieId);
+
+  return { favorites, toggleFavorite, isFavorite };
 }
