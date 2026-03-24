@@ -1,14 +1,23 @@
+"use client";
+
 import useFavorites from "@/hooks/useFavorites";
 import CustomLink from "@/components/interactions/CustomLink";
 
 export default function ToggleFavoriteButton({ 
     id,
-    text = "Favorite",
+    text = {
+        active: "Favorite",
+        inactive: "Favorite"
+    },
 }: {
     id: string;
-    text?: string;
+    text?: {
+        active: string;
+        inactive: string;
+    };
 }) {
     const { isFavorite, toggleFavorite } = useFavorites();
+    const { active: activeText, inactive: inactiveText } = text;
 
     return (
         <CustomLink
@@ -18,7 +27,7 @@ export default function ToggleFavoriteButton({
             }}
             className="mt-2 text-sm text-red-500"
         >
-            {isFavorite(id) ? `❤️ ${text}` : `🤍 ${text}`}
+            {isFavorite(id) ? `❤️ ${activeText}` : `🤍 ${inactiveText}`}
         </CustomLink>
     );
 }

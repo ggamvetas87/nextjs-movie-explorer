@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation'
 import Image from "next/image";
 import { getMovie, getSimilarMovies } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
+import ToggleFavoriteButton from "@/components/interactions/ToggleFavoriteButton";
 import VideoPlayer from "@/components/media/VideoPlayer";
 import MovieCarousel from '@/components/sliders/MovieCarousel';
 import PersonCarousel from '@/components/sliders/PersonCarousel';
 import Section from '@/components/grids/Section';
-import { 
-  // renderCategories,
+import {
   formatRuntime,
   getVideosByType,
   getActors,
@@ -107,6 +107,14 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
 
         <div className="md:w-2/3">
           <h2 className="text-3xl font-bold">{movie?.title}</h2>
+          <ToggleFavoriteButton 
+            id={movie.id}
+            text={{
+              active: "Remove from Favorites",
+              inactive: "Add to Favorites"
+            }}
+          />
+          
           {movie?.vote_average > 0 && <p className="mt-2"><strong>Rating:</strong> <span className="text-2xl text-red-500">&#9733;</span> {movie.vote_average.toFixed(1)}</p>}
           {movie?.runtime > 0 && <p className="mt-2"><strong>Duration:</strong> {formatRuntime(movie.runtime)}</p>}
           {movie?.genres && <p className="mt-0"><strong>Categories:</strong> {renderCategories(movie.genres)}</p>}
