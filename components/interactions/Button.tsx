@@ -15,7 +15,10 @@ export default function Button({
     onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     children?: React.ReactNode
 }) {
-    const baseClasses = "cursor-pointer inline-block px-4 py-1 rounded transition-all duration-300";
+    const baseClasses = `cursor-pointer inline-block 
+        text-sm md:text-base lg:text-base
+        px-3 py-1 md:px-4 md:py-1 lg:px-4 lg:py-1 
+        rounded transition-all duration-300`;
     const importanceClasses = importance === "secondary"
         ? "bg-black text-white hover:bg-white hover:text-black"
         : importance === "tertiary"

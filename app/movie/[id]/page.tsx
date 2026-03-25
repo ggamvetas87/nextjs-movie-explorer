@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation'
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getMovie, getSimilarMovies } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
@@ -48,7 +48,17 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   function renderCategories(categories: { id: number; name: string }[]) {
     if (!categories || categories.length === 0) return null;
 
-    return categories.map(category => <span key={category.id} className="text-sm bg-red-500 text-white rounded px-1 mr-2">{category.name}</span>);
+    return categories.map(category => (
+      <CustomLink 
+        key={category.id}
+        href={`/movie/category/${category.name.toLowerCase().replace(/\s+/g, "-")}-${category.id}`}
+        className="
+          text-sm bg-red-500 text-white 
+          rounded px-1 mr-2
+        ">
+          {category.name}
+        </CustomLink>
+      ));
   }
 
   const renderVideo = () => {

@@ -94,3 +94,14 @@ export function truncate(
 
   return text;
 }
+
+export function parseMovieSlug(slug: string) {
+  const parts = slug.split("-");
+
+  const idPart = parts.pop();
+  const id = idPart ? Number(idPart) : Number.NaN;
+
+  const genre = parts.join("-");
+
+  return { genre, id };
+}

@@ -28,13 +28,13 @@ export async function searchMovies(query: string, page: number = 1, limit: numbe
 }
 
 export async function getMovie(id: string, extraFields?: string) {
-    const res = await fetch(`${BASE_URL}/api/movie/${id}/details?extra_fields=${extraFields}`);
+  const res = await fetch(`${BASE_URL}/api/movie/${id}/details?extra_fields=${extraFields}`);
 
-    if (!res.ok) {
-        throw new Error("Failed to fetch movie details");
-    }
+  if (!res.ok) {
+    throw new Error("Failed to fetch movie details");
+  }
 
-    return res.json();
+  return res.json();
 }
 
 export async function getTrendingMovies(time: "day" | "week" = "day", limit: number = 20) {
@@ -68,4 +68,26 @@ export async function getSimilarMovies(id: string, limit: number = 20) {
 
   const data = await res.json();
   return data.results ? data.results.slice(0, limit) : [];
+}
+
+export async function getCategoryMovies(genres: string, page: number = 1, limit: number = 99999) {
+  const controller = new AbortController();
+  const signal = controller.signal;
+
+  const res = await fetch(
+    `${BASE_URL}/api/movie/discover?genres=${genres}&page=${page}`,
+    { signal }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch category movies");
+  }
+
+  const data = await res.json();
+
+  return {
+    movies: data.results ? data.results.slice(0, limit) : [],
+    totalResults: data.totalResults ?? 0,
+    hasMore: data.hasMore ?? false
+  };
 }
