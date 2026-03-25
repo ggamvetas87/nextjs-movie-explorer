@@ -9,6 +9,7 @@ export default function MovieTileCard({ movie }: { movie: MovieListItem }) {
   const posterUrl = movie?.poster_path
     ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}`
     : "/assets/no-image-placeholder.png";
+  const movieSlug = `${movie.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${movie.id}`;
 
   return (
     <div className="
@@ -17,7 +18,7 @@ export default function MovieTileCard({ movie }: { movie: MovieListItem }) {
       overflow-hidden
     ">
       <div className="flex flex-row">
-        <Link href={`/movie/${movie.id}`}> 
+        <Link href={`/movie/${movieSlug}`}> 
           <Image
             src={posterUrl}
             alt={movie?.title}
@@ -42,7 +43,7 @@ export default function MovieTileCard({ movie }: { movie: MovieListItem }) {
             md:text-base lg:text-base
           ">{movie?.overview && truncate(movie.overview, { maxWords: 50 })}</p>
           <CustomLink 
-            href={`/movie/${movie.id}`}
+            href={`/movie/${movieSlug}`}
             type="button"
             className="mt-3"
           >

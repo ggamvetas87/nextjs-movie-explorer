@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getMovie, getSimilarMovies } from "@/lib/api";
+import { parseMovieSlug } from "@/lib/helpers";
 import CustomLink from "@/components/interactions/CustomLink";
 import ToggleFavoriteButton from "@/components/interactions/ToggleFavoriteButton";
 import VideoPlayer from "@/components/media/VideoPlayer";
@@ -15,8 +16,9 @@ import {
   getCrewByJob
 } from "@/lib/helpers";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const { id } = await params;
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const { slug } = await params;
+  const { id } = parseMovieSlug(slug);
   const movie = await getMovie(id);
 
   if (!movie) {
@@ -32,8 +34,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function MoviePage({ params }: { params: { id: string } }) {
-  const { id } = await params;
+export default async function MoviePage({ 
+  params
+ }: { 
+  params: { slug: string } 
+}) {
+  const { slug } = await params;
+
+  const { id } = parseMovieSlug(slug);
   const movie = await getMovie(id, "credits,videos");
   const posterUrl = `${movie?.poster_path ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}` : "/assets/no-image-placeholder.png"}`;
   const cast = movie?.credits?.cast || [];
@@ -41,7 +49,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   const actors = getActors(cast, 10);
   const directors = getCrewByJob({ data: crew, limit: 5, role: "Director" });
 
-  if (!movie) {
+  if (!movie || Number.isNaN(id)) {
     return notFound();
   }
 

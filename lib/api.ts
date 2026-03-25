@@ -27,7 +27,7 @@ export async function searchMovies(query: string, page: number = 1, limit: numbe
   };
 }
 
-export async function getMovie(id: string, extraFields?: string) {
+export async function getMovie(id: string | number, extraFields?: string) {
   const res = await fetch(`${BASE_URL}/api/movie/${id}/details?extra_fields=${extraFields}`);
 
   if (!res.ok) {

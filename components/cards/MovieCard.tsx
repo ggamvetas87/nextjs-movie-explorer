@@ -7,10 +7,11 @@ export default function MovieCard({ movie }: { movie: MovieListItem }) {
   const posterUrl = movie?.poster_path
     ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}`
     : "/assets/no-image-placeholder.png";
+  const movieSlug = `${movie.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${movie.id}`;
 
   return (
     <div className="relative">
-      <Link href={`/movie/${movie.id}`}>
+      <Link href={`/movie/${movieSlug}`}>
         <div className="p-3 hover:shadow group cursor-pointer">
           <Image
             src={posterUrl}
