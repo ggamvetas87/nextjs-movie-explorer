@@ -100,7 +100,10 @@ This project uses the TMDB (The Movie Database) API for fetching movie data.
 - **Search**: Real-time movie search with debounced queries to reduce API calls
 - **Infinite Scroll**: Automatically load more results as you scroll
 - **Favorites**: Save favorite movies to browser localStorage
-- **Movie Details**: Click any movie to view full details on a dedicated page
+- **Category Pages**: Browse movies by genre with pagination support
+- **User-Friendly URLs**: Clean, readable URLs for movie details and genre pages
+- **GitHub Authentication**: Login with your GitHub account for personalized favorite movies
+- **Enhanced Search**: Search queries are reflected in the browser URL for easy sharing and bookmarking
 
 ## License
 
