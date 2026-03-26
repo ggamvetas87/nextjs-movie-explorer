@@ -6,6 +6,7 @@ import { MoviesProvider } from "@/context/MoviesContext";
 import Header from "@/components/partial/Header";
 import Footer from "@/components/partial/Footer";
 import BackToTop from "@/components/interactions/BackToTop";
+import { robotsMeta } from "@/lib/helpers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,6 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Popcornia – evokes popcorn and fun movie browsing",
   description: "A Next.js app to search and explore movies using the IMDb API.",
+  robots: robotsMeta({})
 };
 
 export default function RootLayout({

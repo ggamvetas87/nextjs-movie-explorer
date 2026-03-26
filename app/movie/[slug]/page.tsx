@@ -7,7 +7,8 @@ import {
   getVideosByType,
   getActors,
   getCrewByJob,
-  parseMovieSlug
+  parseMovieSlug,
+  robotsMeta
 } from "@/lib/helpers";
 import CustomLink from "@/components/interactions/CustomLink";
 import ToggleFavoriteButton from "@/components/interactions/ToggleFavoriteButton";
@@ -31,6 +32,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${movie.title} | Popcornia`,
     description: movie.overview,
+    robots: robotsMeta({})
   };
 }
 

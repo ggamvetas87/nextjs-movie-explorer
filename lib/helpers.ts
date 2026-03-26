@@ -105,3 +105,26 @@ export function parseMovieSlug(slug: string) {
 
   return { genre, id };
 }
+
+export function robotsMeta({
+  index = true,
+  follow = true
+}: {
+  index?: boolean,
+  follow?: boolean
+}) {
+  const isSeoEnabled = process.env.ENABLE_SEO === "true";
+
+  if (!isSeoEnabled) {
+    return {
+      index: false,
+      follow: false
+    };
+  }
+  
+  return {
+    index,
+    follow
+  };
+}
+

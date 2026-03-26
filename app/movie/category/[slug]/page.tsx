@@ -4,7 +4,7 @@ import { getCategoryMovies } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
 import MovieTileCard from "@/components/cards/MovieTileCard";
 import Pagination from "@/components/interactions/Pagination";
-import { parseMovieSlug } from "@/lib/helpers";
+import { parseMovieSlug, robotsMeta } from "@/lib/helpers";
 import { MovieListItem } from "@/types/thmdb";
 
 function formatGenre(genre: string) {
@@ -38,6 +38,7 @@ export async function generateMetadata({
   return {
     title: `Movies in category ${genre} | Page ${page} | Popcornia`,
     description: `A list of movies in the ${genre} category.`,
+    robots: robotsMeta({})
   };
 }
 

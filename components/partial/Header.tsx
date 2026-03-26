@@ -8,7 +8,7 @@ import GithubButton from "@/components/interactions/GithubButton";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
-
+  
   return (
     <Section
       className="mb-0"
