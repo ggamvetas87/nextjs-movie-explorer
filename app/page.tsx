@@ -4,12 +4,18 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import useFavorites from "@/hooks/useFavorites";
 import SearchBar from "@/components/search/SearchBar";
 import MovieRow from "@/components/grids/MovieRow";
 import HeroCarousel from "@/components/sliders/HeroCarousel";
 import MovieCarousel from "@/components/sliders/MovieCarousel";
 import SearchResults from "@/components/search/SearchResults";
-import { searchMovies, getTrendingMovies, getMovieTagList } from "@/lib/api";
+import {
+  searchMovies,
+  getTrendingMovies,
+  getMovieTagList,
+  getFavoriteMovies
+} from "@/lib/api";
 import { MovieListItem } from "@/types/thmdb";
 
 export default function Home() {
@@ -17,6 +23,7 @@ export default function Home() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { favorites } = useFavorites();
 
   const initialPage = Number(searchParams.get("page") || 1);
   const initialQuery = searchParams.get("query") || "";
@@ -25,15 +32,17 @@ export default function Home() {
   const [totalResults, setTotalResults] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
+  const [favoriteMovies, setFavoriteMovies] = useState<MovieListItem[] | []>([]);
   const [trending, setTrending] = useState<MovieListItem[] | null>(null);
   const [upcoming, setUpcoming] = useState<MovieListItem[] | null>(null);
 
   useEffect(() => {
     // Load initial data for hero banners, trending and upcoming sections
     getMovieTagList("popular").then(setHeroBanners);
+    getFavoriteMovies(favorites).then((data) => setFavoriteMovies(data.movies));
     getTrendingMovies().then(setTrending);
     getMovieTagList("upcoming").then(setUpcoming);
-  }, []);
+  }, [favorites]);
 
   useEffect(() => {
     if (!initialQuery) return;
@@ -118,7 +127,7 @@ export default function Home() {
   useInfiniteScroll(() => {
     if (query) loadMoreMovies();
   });
-
+// console.log(favoriteMovies);
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">
@@ -140,6 +149,11 @@ export default function Home() {
         <div>
           {heroBanners && <HeroCarousel movies={heroBanners} count={6} />}
           <div>
+            {favoriteMovies.length > 0 && (
+              <MovieRow title="Favorites">
+                <MovieCarousel movies={favoriteMovies} count={10} />
+              </MovieRow>
+            )}
             {trending && (
               <MovieRow title="Trending">
                 <MovieCarousel movies={trending} count={20} />

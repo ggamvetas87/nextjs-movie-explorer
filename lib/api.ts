@@ -48,6 +48,21 @@ export async function getTrendingMovies(time: "day" | "week" = "day", limit: num
   return data.results ? data.results.slice(0, limit) : [];
 }
 
+export async function getFavoriteMovies(ids: string[] = [], limit: number = 99999) {
+  const res = await fetch(`${BASE_URL}/api/movie/favorites?ids=${ids.join(",")}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch favorite movies");
+  }
+
+  const data = await res.json();
+
+  return {
+    movies: data.results ? data.results.slice(0, limit) : [],
+    totalResults: data.totalResults ?? 0
+  };
+}
+
 export async function getMovieTagList(tag: string, limit: number = 20) {
   const res = await fetch(`${BASE_URL}/api/movie/${tag}`);
 

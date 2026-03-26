@@ -60,7 +60,7 @@ export default function MovieCarousel({
     embla.reInit();
   }, [slidesToScroll, embla]);
 
-  return (
+  return movies?.length > 0 && (
     <div className="overflow-hidden mb-10 relative" ref={emblaRef}>
       <div className="flex">
         {movies.slice(0,count).map((movie) => (
