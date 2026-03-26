@@ -10,12 +10,16 @@ A simple and modern demo movie search web app built with Next.js.
 - Loading skeletons
 - Favorites with localStorage
 - Movie details page
+- Category / Genre page with movies
+- Github Login
 
 ## Tech Stack
 
-- Next.js
-- React
-- Tailwind CSS
+- Next.js v16
+- React.js v19
+- NextAuth v4
+- Typescript v5
+- Tailwind CSS v4
 - External API
 
 ## Architecture

@@ -156,17 +156,17 @@ export default function Home() {
           {heroBanners && <HeroCarousel movies={heroBanners} count={6} />}
           <div>
             {favoriteMovies.length > 0 && (
-              <MovieRow title="Favorites">
+              <MovieRow title="❤️ Favorites">
                 <MovieCarousel movies={favoriteMovies} count={10} />
               </MovieRow>
             )}
             {trending && (
-              <MovieRow title="Trending">
+              <MovieRow title="🔥 Trending">
                 <MovieCarousel movies={trending} count={20} />
               </MovieRow>
             )}
             {upcoming && (
-              <MovieRow title="Upcoming">
+              <MovieRow title="📅 Upcoming">
                 <MovieCarousel movies={upcoming} count={20} />
               </MovieRow>
             )}
