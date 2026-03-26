@@ -24,7 +24,7 @@ export default function Pagination({
   return (
     <div className="flex flex-col md:flex-row lg:flex-row items-center justify-between gap-4">
 
-      <div className="text-sm text-gray-600">
+      <div className="text-sm text-gray-300">
         Showing <strong>{start}-{end}</strong> of{" "}
         <strong>{totalResults}</strong> results
         {" "} (Page <strong>{currentPage}</strong> of{" "}
