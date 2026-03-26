@@ -2,19 +2,19 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getMovie, getSimilarMovies } from "@/lib/api";
-import { parseMovieSlug } from "@/lib/helpers";
+import {
+  formatRuntime,
+  getVideosByType,
+  getActors,
+  getCrewByJob,
+  parseMovieSlug
+} from "@/lib/helpers";
 import CustomLink from "@/components/interactions/CustomLink";
 import ToggleFavoriteButton from "@/components/interactions/ToggleFavoriteButton";
 import VideoPlayer from "@/components/media/VideoPlayer";
 import MovieCarousel from '@/components/sliders/MovieCarousel';
 import PersonCarousel from '@/components/sliders/PersonCarousel';
 import Section from '@/components/grids/Section';
-import {
-  formatRuntime,
-  getVideosByType,
-  getActors,
-  getCrewByJob
-} from "@/lib/helpers";
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { slug } = await params;
@@ -23,13 +23,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   if (!movie) {
     return {
-      title: "Movie not found",
+      title: "Movie not found | Popcornia",
       description: "The movie you are looking for does not exist."
     };
   }
 
   return {
-    title: movie.title,
+    title: `${movie.title} | Popcornia`,
     description: movie.overview,
   };
 }

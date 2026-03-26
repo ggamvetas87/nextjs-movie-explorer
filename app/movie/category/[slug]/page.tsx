@@ -14,22 +14,29 @@ function formatGenre(genre: string) {
     .join(" ");
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ 
+  params,
+  searchParams
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}): Promise<Metadata> {
+  const [{ slug }, { page: pageParam }] = await Promise.all([params, searchParams]);
+  
   const { genre, id } = parseMovieSlug(slug);
-
+  const page = Number(pageParam ?? "1");
   const data = await getCategoryMovies(id?.toString());
   const { movies } = data;
 
   if (!movies || movies?.length === 0) {
     return {
-      title: "Movies not found",
+      title: "Movies not found | Popcornia",
       description: "The movies you are looking for do not exist."
     };
   }
 
   return {
-    title: `Movies in category ${genre}`,
+    title: `Movies in category ${genre} | Page ${page} | Popcornia`,
     description: `A list of movies in the ${genre} category.`,
   };
 }
