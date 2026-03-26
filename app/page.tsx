@@ -39,9 +39,15 @@ export default function Home() {
   useEffect(() => {
     // Load initial data for hero banners, trending and upcoming sections
     getMovieTagList("popular").then(setHeroBanners);
-    getFavoriteMovies(favorites).then((data) => setFavoriteMovies(data.movies));
     getTrendingMovies().then(setTrending);
     getMovieTagList("upcoming").then(setUpcoming);
+  }, []);
+
+  useEffect(() => {
+    // Load favorites
+    if (!favorites || favorites.length === 0) return;
+
+    getFavoriteMovies(favorites, 10).then((data) => setFavoriteMovies(data.movies));
   }, [favorites]);
 
   useEffect(() => {
@@ -127,7 +133,7 @@ export default function Home() {
   useInfiniteScroll(() => {
     if (query) loadMoreMovies();
   });
-// console.log(favoriteMovies);
+
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-4">
