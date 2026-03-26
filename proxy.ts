@@ -12,7 +12,9 @@ export function proxy(request: NextRequest) {
   }
 
   if (cookie?.value === "true") {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set("x-debug-time", new Date().toISOString());
+    return response;
   }
 
   if (token === process.env.DEMO_ACCESS_TOKEN) {

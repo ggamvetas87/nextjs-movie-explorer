@@ -7,6 +7,7 @@ import Header from "@/components/partial/Header";
 import Footer from "@/components/partial/Footer";
 import BackToTop from "@/components/interactions/BackToTop";
 import { robotsMeta } from "@/lib/helpers";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +18,13 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const isProd = process.env.NODE_ENV === "production";
+const bypassCache = process.env.CACHE_BYPASS === "true";
+const rawTTL = Number(process.env.CACHE_TTL);
+const cacheTTL = Number.isFinite(rawTTL) ? rawTTL : 0;
+
+export const pageRevalidate = isProd && !bypassCache ? cacheTTL : 0;
 
 export const metadata: Metadata = {
   title: "Popcornia – evokes popcorn and fun movie browsing",
@@ -40,7 +48,9 @@ export default function RootLayout({
         <AuthSessionProvider>
           <MoviesProvider>
             <Header />
+            <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
             {children}
+            </Suspense>
             <Footer />
             <BackToTop />
           </MoviesProvider>

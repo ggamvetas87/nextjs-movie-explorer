@@ -12,9 +12,6 @@ type MoviesContextType = {
 
   loading: boolean;
   setLoading: (loading: boolean) => void;
-
-  favorites: MovieListItem[];
-  toggleFavorite: (movie: MovieListItem) => void;
 };
 
 const MoviesContext = createContext<MoviesContextType | null>(null);
@@ -23,19 +20,6 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
   const [movies, setMovies] = useState<MovieListItem[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [favorites, setFavorites] = useState<MovieListItem[]>([]);
-
-  function toggleFavorite(movie: MovieListItem) {
-    setFavorites((prev) => {
-      const exists = prev.find((m) => m["#IMDB_ID"] === movie["#IMDB_ID"]);
-
-      if (exists) {
-        return prev.filter((m) => m["#IMDB_ID"] !== movie["#IMDB_ID"]);
-      }
-
-      return [...prev, movie];
-    });
-  }
 
   const value = useMemo(
     () => ({
@@ -44,11 +28,9 @@ export function MoviesProvider({ children }: { children: React.ReactNode }) {
       query,
       setQuery,
       loading,
-      setLoading,
-      favorites,
-      toggleFavorite
+      setLoading
     }),
-    [movies, query, loading, favorites]
+    [movies, query, loading]
   );
 
   return (
