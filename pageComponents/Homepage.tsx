@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
@@ -20,18 +20,22 @@ import { MovieListItem } from "@/types/thmdb";
 
 type Props = {
   initialQuery: string;
-  initialPage: number;
+  initialPage?: number;
 };
+
+const itemsPerPage = 20;
 
 export default function HomeClient({
   initialQuery,
-  initialPage
+  initialPage = 1
 }: Props) {
 
   const { loading, movies, setMovies, query, setQuery } = useMovies();
 
   const router = useRouter();
   const { favorites } = useFavorites();
+
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const [page, setPage] = useState(initialPage);
   const [totalResults, setTotalResults] = useState(0);
@@ -62,37 +66,43 @@ export default function HomeClient({
     async function init() {
       let allMovies: MovieListItem[] = [];
 
-      for (let i = 1; i <= initialPage; i++) {
-        const data = await searchMovies(initialQuery, i);
-        allMovies = [...allMovies, ...data.movies];
-      }
+      const pages = await Promise.all(
+        Array.from({ length: initialPage }, (_, i) =>
+          searchMovies(initialQuery, i + 1)
+        )
+      );
+
+      allMovies = pages.flatMap(p => p.movies);
 
       setQuery(initialQuery);
       setMovies(allMovies);
       setHasMore(true);
+
+      // scroll restore
+      // requestAnimationFrame(() => {
+      //   const el = resultsRef.current;
+      //   if (!el) return;
+
+      //   const targetIndex = (initialPage - 1) * itemsPerPage;
+
+      //   const item = el.children[targetIndex] as HTMLElement;
+
+      //   item?.scrollIntoView({
+      //     behavior: "instant",
+      //     block: "start"
+      //   });
+      // });
     }
 
     init();
   }, [initialQuery, initialPage, setMovies, setQuery]);
 
   function updateUrl(newQuery: string, newPage: number) {
-    const params = new URLSearchParams();
-
-    if (newQuery) params.set("query", newQuery);
-    params.set("page", newPage.toString());
-
-    router.replace(`?${params.toString()}`, { scroll: false });
+    router.replace(`/?query=${encodeURIComponent(newQuery)}&page=${newPage}`, { scroll: false });
   }
 
   function clearSearchFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-
-    params.delete("query");
-    params.delete("page");
-
-    const newUrl = params.toString() ? `?${params.toString()}` : "/";
-
-    router.replace(newUrl, { scroll: false });
+    router.push("/");
   }
 
   function onTextboxClear() {
@@ -135,7 +145,8 @@ export default function HomeClient({
   }
 
   useInfiniteScroll(() => {
-    if (query) loadMoreMovies();
+    if (!query) return;
+    loadMoreMovies();
   });
 
   return (
@@ -148,14 +159,16 @@ export default function HomeClient({
         onSearch={handleSearch}
         onClear={onTextboxClear}
       />
-      
+
       {movies && (
-        <SearchResults
-          query={query}
-          movies={movies}
-          page={page}
-          totalResults={totalResults}
-        />
+        <div ref={resultsRef}>
+          <SearchResults
+            query={query}
+            movies={movies}
+            page={page}
+            totalResults={totalResults}
+          />
+        </div>
       )}
 
       {!movies.length && !loading && (

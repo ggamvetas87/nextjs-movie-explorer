@@ -8,14 +8,14 @@ type Props = {
 };
 
 export default async function Page({ searchParams }: Props) {
-  const { query, page } = await searchParams;
-  const initialQuery = query || "";
-  const initialPage = Number(page || 1);
+  const { query: queryParam, page: pageParam } = await searchParams;
+  const query = queryParam ?? "";
+  const page = Number(pageParam ?? 1);
 
   return (
     <Homepage
-      initialQuery={initialQuery}
-      initialPage={initialPage}
+      initialQuery={query}
+      initialPage={page}
     />
   );
 }
