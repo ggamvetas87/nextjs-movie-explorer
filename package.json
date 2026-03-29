@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
+    "build-podman": "podman build -t next-movie-app .",
+    "run-podman": "podman run -p 5000:3000 --name next-movie-app next-movie-app",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean-install": "rm -rf build/ .next/ node_modules/ yarn.lock && yarn cache clean && yarn"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.6.0",

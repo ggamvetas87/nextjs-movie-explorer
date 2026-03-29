@@ -18,12 +18,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const isProd = process.env.NODE_ENV === "production";
-const bypassCache = process.env.CACHE_BYPASS === "true";
-const rawTTL = Number(process.env.CACHE_TTL);
-const cacheTTL = Number.isFinite(rawTTL) ? rawTTL : 0;
-
-export const pageRevalidate = isProd && !bypassCache ? cacheTTL : 0;
+export const revalidate = 3600; // Revalidate every hour
 
 export const metadata: Metadata = {
   title: "Popcornia – evokes popcorn and fun movie browsing",
