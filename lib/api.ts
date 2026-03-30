@@ -1,16 +1,20 @@
-export function getBaseUrl() {
-  if (typeof window !== "undefined") return "";
-  return process.env.BASE_URL || "http://localhost:3000";
-}
-
-const BASE_URL = getBaseUrl();
-
-export async function searchMovies(query: string, page: number = 1, limit: number = 99999) {
+export async function searchMovies(
+  query: string,
+  {
+    page = 1,
+    limit = 99999,
+    origin
+  }: {
+    page?: number;
+    limit?: number;
+    origin?: string;
+  }
+) {
   const controller = new AbortController();
   const signal = controller.signal;
 
   const res = await fetch(
-    `${BASE_URL}/api/movie/search/${query}?page=${page}`,
+    `${origin ?? ""}/api/movie/search/${query}?page=${page}`,
     { signal }
   );
 
@@ -27,8 +31,16 @@ export async function searchMovies(query: string, page: number = 1, limit: numbe
   };
 }
 
-export async function getMovie(id: string | number, extraFields?: string) {
-  const res = await fetch(`${BASE_URL}/api/movie/${id}/details?extra_fields=${extraFields}`);
+export async function getMovie(
+  id: string | number,
+  {
+    extraFields,
+    origin
+  }: {
+    extraFields?: string;
+    origin?: string
+  }) {
+  const res = await fetch(`${origin ?? ""}/api/movie/${id}/details?extra_fields=${extraFields}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch movie details");
@@ -38,7 +50,7 @@ export async function getMovie(id: string | number, extraFields?: string) {
 }
 
 export async function getTrendingMovies(time: "day" | "week" = "day", limit: number = 20) {
-  const res = await fetch(`${BASE_URL}/api/movie/trending/${time}`);
+  const res = await fetch(`/api/movie/trending/${time}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch trending movies");
@@ -49,7 +61,7 @@ export async function getTrendingMovies(time: "day" | "week" = "day", limit: num
 }
 
 export async function getFavoriteMovies(ids: string[] = [], limit: number = 99999) {
-  const res = await fetch(`${BASE_URL}/api/movie/favorites?ids=${ids.join(",")}`);
+  const res = await fetch(`/api/movie/favorites?ids=${ids.join(",")}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch favorite movies");
@@ -64,7 +76,7 @@ export async function getFavoriteMovies(ids: string[] = [], limit: number = 9999
 }
 
 export async function getMovieTagList(tag: string, limit: number = 20) {
-  const res = await fetch(`${BASE_URL}/api/movie/${tag}`);
+  const res = await fetch(`/api/movie/${tag}`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch movie list");
@@ -74,8 +86,17 @@ export async function getMovieTagList(tag: string, limit: number = 20) {
   return data.results ? data.results.slice(0, limit) : [];
 }
 
-export async function getSimilarMovies(id: string, limit: number = 20) {
-  const res = await fetch(`${BASE_URL}/api/movie/${id}/similar`);
+export async function getSimilarMovies(
+  id: string,
+  {
+    limit = 20,
+    origin
+  }: {
+    limit?: number;
+    origin?: string
+  }
+) {
+  const res = await fetch(`${origin ?? ""}/api/movie/${id}/similar`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch similar movies");
@@ -85,12 +106,23 @@ export async function getSimilarMovies(id: string, limit: number = 20) {
   return data.results ? data.results.slice(0, limit) : [];
 }
 
-export async function getCategoryMovies(genres: string, page: number = 1, limit: number = 99999) {
+export async function getCategoryMovies(
+  genres: string,
+  {
+    page = 1,
+    limit = 99999,
+    origin
+  }: {
+    page?: number;
+    limit?: number;
+    origin?: string;
+  }
+) {
   const controller = new AbortController();
   const signal = controller.signal;
 
   const res = await fetch(
-    `${BASE_URL}/api/movie/discover?genres=${genres}&page=${page}`,
+    `${origin ?? ""}/api/movie/discover?genres=${genres}&page=${page}`,
     { signal }
   );
 

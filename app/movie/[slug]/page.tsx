@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { getOrigin } from "@/lib/utils";
 import { getMovie, getSimilarMovies } from "@/lib/api";
 import {
   formatRuntime,
@@ -20,7 +21,8 @@ import Section from '@/components/grids/Section';
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const { slug } = await params;
   const { id } = parseMovieSlug(slug);
-  const movie = await getMovie(id);
+  const origin = await getOrigin();
+  const movie = await getMovie(id, { origin });
 
   if (!movie) {
     return {
@@ -44,7 +46,9 @@ export default async function MoviePage({
   const { slug } = await params;
 
   const { id } = parseMovieSlug(slug);
-  const movie = await getMovie(id, "credits,videos");
+  const origin = await getOrigin();
+  
+  const movie = await getMovie(id, { extraFields: "credits,videos", origin });
   const posterUrl = `${movie?.poster_path ? `${process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL}/w500/${movie.poster_path}` : "/assets/no-image-placeholder.png"}`;
   const cast = movie?.credits?.cast || [];
   const crew = movie?.credits?.crew || [];
@@ -92,7 +96,7 @@ export default async function MoviePage({
     )};
 
   const renderSimilarMovies = async () => {
-    const similarMovies = await getSimilarMovies(movie.id, 20);
+    const similarMovies = await getSimilarMovies(movie.id, { origin });
     
     return similarMovies?.length > 0 && (
       <>

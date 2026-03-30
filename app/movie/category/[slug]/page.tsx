@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getOrigin } from "@/lib/utils";
 import { getCategoryMovies } from "@/lib/api";
 import CustomLink from "@/components/interactions/CustomLink";
 import MovieTileCard from "@/components/cards/MovieTileCard";
@@ -25,7 +26,8 @@ export async function generateMetadata({
   
   const { genre, id } = parseMovieSlug(slug);
   const page = Number(pageParam ?? "1");
-  const data = await getCategoryMovies(id?.toString());
+  const origin = await getOrigin();
+  const data = await getCategoryMovies(id?.toString(), { page, origin });
   const { movies } = data;
 
   if (!movies || movies?.length === 0) {
@@ -53,7 +55,8 @@ export default async function CategoryPage({
 
   const { genre, id } = parseMovieSlug(slug);
   const page = Number(pageParam ?? "1");
-  const data = await getCategoryMovies(id?.toString(), page);
+  const origin = await getOrigin();
+  const data = await getCategoryMovies(id?.toString(), { page, origin });
   const { movies, totalResults } = data;
 
   if (!movies || movies?.length === 0 || Number.isNaN(id)) {

@@ -21,7 +21,7 @@ FROM base AS builder
 WORKDIR /usr/src/app
 
 COPY --from=base /usr/src/app/node_modules ./node_modules
-COPY .env.production .env.production
+COPY .env.local .env.production
 ENV NODE_ENV=production
 
 # Copy everything else

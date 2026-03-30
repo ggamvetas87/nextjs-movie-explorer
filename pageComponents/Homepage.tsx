@@ -68,7 +68,7 @@ export default function HomeClient({
 
       const pages = await Promise.all(
         Array.from({ length: initialPage }, (_, i) =>
-          searchMovies(initialQuery, i + 1)
+          searchMovies(initialQuery, { page: i + 1, limit: itemsPerPage })
         )
       );
 
@@ -122,7 +122,7 @@ export default function HomeClient({
 
     updateUrl(newQuery, 1);
 
-    const data = await searchMovies(newQuery, 1);
+    const data = await searchMovies(newQuery, { page: 1, limit: itemsPerPage });
 
     setMovies(data.movies);
     setHasMore(data.hasMore);
@@ -134,7 +134,7 @@ export default function HomeClient({
 
     const nextPage = page + 1;
 
-    const data = await searchMovies(query, nextPage);
+    const data = await searchMovies(query, { page: nextPage, limit: itemsPerPage });
 
     setMovies([...movies, ...data.movies]);
     setPage(nextPage);
