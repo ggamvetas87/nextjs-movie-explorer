@@ -32,6 +32,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next|api|assets|favicon.ico|access-denied).*)",
+    "/((?!_next|api|assets/|favicon.ico|access-denied).*)"
   ],
 };

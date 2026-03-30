@@ -2,19 +2,19 @@ import { searchMovies } from "@/lib/api";
 import { Actor, Crew, Video } from "@/types/thmdb";
 
 export async function loadMovies(query: string, page: number = 1, limit: number = 8) {
-    const data = await searchMovies(query, page, limit);
-    return data?.movies;
+  const data = await searchMovies(query, page, limit);
+  return data?.movies;
 }
 
 export function getMovieYear(releaseDate: string) {
-    if (!releaseDate) return "N/A";
-    return new Date(releaseDate).getFullYear();
+  if (!releaseDate) return "N/A";
+  return new Date(releaseDate).getFullYear();
 }
 
 export function renderCategoriesAsString(categories: { name: string }[]) {
-    if (!categories || categories.length === 0) return null;
+  if (!categories || categories.length === 0) return null;
 
-    return categories.map(category => category.name).join(", ");
+  return categories.map(category => category.name).join(", ");
 }
 
 export function getVideosByType(
@@ -41,32 +41,32 @@ export function formatRuntime(minutes: number): string {
 }
 
 export function getActors(data: Actor[], limit: number = 5) {
-    return data.slice(0, limit).map((person: Actor) => ({
-        id: person.id,
-        name: person.name,
-        imgUrl: person.profile_path,
-        character: person.character,
-        url: person.id && `https://www.themoviedb.org/person/${person.id}`
-    }));
+  return data.slice(0, limit).map((person: Actor) => ({
+    id: person.id,
+    name: person.name,
+    imgUrl: person.profile_path,
+    character: person.character,
+    url: person.id && `https://www.themoviedb.org/person/${person.id}`
+  }));
 }
 
 export function getCrewByJob(
 {
-    data,
-    limit = 5,
-    role = "Director"
+  data,
+  limit = 5,
+  role = "Director"
 } : {
-    data: Crew[];
-    limit: number;
-    role: string;
+  data: Crew[];
+  limit: number;
+  role: string;
 }) {
-    return data.slice(0, limit).filter((member: Crew) => member.job === role).map((person: Crew) => ({
-        id: person.id,
-        name: person.name,
-        imgUrl: person.profile_path,
-        role: person.job,
-        url: person.id && `https://www.themoviedb.org/person/${person.id}`
-    }));
+  return data.slice(0, limit).filter((member: Crew) => member.job === role).map((person: Crew) => ({
+    id: person.id,
+    name: person.name,
+    imgUrl: person.profile_path,
+    role: person.job,
+    url: person.id && `https://www.themoviedb.org/person/${person.id}`
+  }));
 }
 
 export type TruncateOptions = {
