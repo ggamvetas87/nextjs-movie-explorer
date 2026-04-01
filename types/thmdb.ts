@@ -1,17 +1,3 @@
-export type MovieListItem = {
-    id: string;
-    title: string;
-    overview: string;
-    release_date: string;
-    poster_path: string;
-    backdrop_path?: string;
-    popularity: number;
-    genre_ids: number[];
-    vote_average: number;
-    vote_counts: number;
-    adult: boolean;
-};
-
 export type Category = string;
 
 export type Video = {
@@ -60,4 +46,34 @@ export type Person = {
     url?: string;
     role?: string;
     character?: string;
+};
+
+export type MovieListItem = {
+    id: string;
+    title: string;
+    overview: string;
+    release_date: string;
+    poster_path: string;
+    backdrop_path?: string;
+    popularity: number;
+    genre_ids: number[];
+    genres?: { id: number; name: string }[];
+    runtime: number;
+    vote_average: number;
+    vote_counts: number;
+    adult: boolean;
+    video: boolean;
+    videos?: {
+        results: Video[];
+    };
+    credits?: {
+        cast: Actor[];
+        crew: Crew[];
+    };
+};
+
+export type MovieResults = {
+    results: MovieListItem[];
+    total_results: number;
+    total_pages: number;
 };

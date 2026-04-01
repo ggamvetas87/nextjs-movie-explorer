@@ -12,22 +12,26 @@ import MovieCarousel from "@/components/sliders/MovieCarousel";
 import SearchResults from "@/components/search/SearchResults";
 import {
   searchMovies,
-  getTrendingMovies,
-  getMovieTagList,
   getFavoriteMovies
-} from "@/lib/api";
+} from "@/lib/client/api";
 import { MovieListItem } from "@/types/thmdb";
 
 type Props = {
   initialQuery: string;
   initialPage?: number;
+  heroBanners?: MovieListItem[];
+  trending?: MovieListItem[];
+  upcoming?: MovieListItem[];
 };
 
 const itemsPerPage = 20;
 
 export default function HomeClient({
   initialQuery,
-  initialPage = 1
+  initialPage = 1,
+  heroBanners: initialHeroBanners,
+  trending: initialTrending,
+  upcoming: initialUpcoming
 }: Props) {
 
   const { loading, movies, setMovies, query, setQuery } = useMovies();
@@ -41,16 +45,10 @@ export default function HomeClient({
   const [totalResults, setTotalResults] = useState(0);
   const [hasMore, setHasMore] = useState(false);
 
-  const [heroBanners, setHeroBanners] = useState<MovieListItem[] | null>(null);
   const [favoriteMovies, setFavoriteMovies] = useState<MovieListItem[]>([]);
-  const [trending, setTrending] = useState<MovieListItem[] | null>(null);
-  const [upcoming, setUpcoming] = useState<MovieListItem[] | null>(null);
-
-  useEffect(() => {
-    getMovieTagList("popular").then(setHeroBanners);
-    getTrendingMovies().then(setTrending);
-    getMovieTagList("upcoming").then(setUpcoming);
-  }, []);
+  const [heroBanners] = useState(initialHeroBanners ?? null);
+  const [trending] = useState(initialTrending ?? null);
+  const [upcoming] = useState(initialUpcoming ?? null);
 
   useEffect(() => {
     if (!favorites || favorites.length === 0) return;
@@ -61,7 +59,11 @@ export default function HomeClient({
   }, [favorites]);
 
   useEffect(() => {
-    if (!initialQuery) return;
+    // If there's no initial query or we already have movies 
+    // (e.g. from a previous search), don't re-run the search
+    // due to RSC re-rendering the component on the client
+    // We only want to run the search on the initial render
+    if (!initialQuery || movies.length > 0) return;
 
     async function init() {
       let allMovies: MovieListItem[] = [];

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCategoryMovies } from "@/lib/api";
+import { getCategoryMovies } from "@/lib/server/utils";
 import CustomLink from "@/components/interactions/CustomLink";
 import MovieTileCard from "@/components/cards/MovieTileCard";
 import Pagination from "@/components/interactions/Pagination";
