@@ -5,13 +5,13 @@ import { MovieListItem } from "@/types/thmdb";
 
 type MoviesContextType = {
   movies: MovieListItem[];
-  setMovies: (movies: MovieListItem[]) => void;
+  setMovies: React.Dispatch<React.SetStateAction<MovieListItem[]>>;
 
   query: string;
-  setQuery: (query: string) => void;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
 
   loading: boolean;
-  setLoading: (loading: boolean) => void;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const MoviesContext = createContext<MoviesContextType | null>(null);
