@@ -31,14 +31,14 @@ export default function HomeClient({
   upcoming: initialUpcoming
 }: Props) {
 
-  const { loading, movies, setMovies} = useMovies();
+  const { loading, movies, setMovies, query, setQuery } = useMovies();
   const { favorites } = useFavorites();
 
   const loadingRef = useRef(false);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const prevQueryRef = useRef(query);
 
-  const [page, setPage] = useState(() => initialPage);
-  const [query, setQuery] = useState(() => initialQuery);
+  const [page, setPage] = useState(() => query && query !== initialQuery ? 1 : initialPage);
 
   const [totalResults, setTotalResults] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -47,6 +47,8 @@ export default function HomeClient({
   const [heroBanners] = useState(initialHeroBanners ?? null);
   const [trending] = useState(initialTrending ?? null);
   const [upcoming] = useState(initialUpcoming ?? null);
+
+  const getCurrentPage = (pageNumber?: number) => pageNumber ?? page;
 
   useEffect(() => {
     if (!favorites || favorites.length === 0) return;
@@ -57,6 +59,28 @@ export default function HomeClient({
   }, [favorites]);
 
   useEffect(() => {
+    if (prevQueryRef.current !== query) {
+      setPage(1);
+    }
+
+    prevQueryRef.current = query;
+  }, [query]);
+
+  useEffect(() => {
+    if (!initialQuery) return;
+
+    const currentPage = getCurrentPage();
+
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: (currentPage - 1) * 1,
+        behavior: "smooth"
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
+
+  useEffect(() => {
     // If there's no initial query or we already have movies 
     // (e.g. from a previous search), don't re-run the search
     // due to RSC re-rendering the component on the client
@@ -64,11 +88,12 @@ export default function HomeClient({
     if (!initialQuery || movies.length > 0) return;
 
     async function init() {
-      const data = await searchMovies(initialQuery, initialPage);
+      const currentPage = getCurrentPage();
+      const data = await searchMovies(initialQuery, currentPage);
 
       setQuery(initialQuery);
       setMovies(data.movies);
-      setPage(initialPage);
+      setPage(currentPage);
       setHasMore(data.hasMore);
       setTotalResults(data.totalResults);
     }
@@ -79,10 +104,11 @@ export default function HomeClient({
 
   function updateUrl(query: string, page: number) {
     const url = new URL(window.location.href);
+    const currentPage = getCurrentPage(page);
 
     if (query) {
       url.searchParams.set("query", query);
-      url.searchParams.set("page", String(page));
+      url.searchParams.set("page", String(currentPage));
     } else {
       url.searchParams.delete("query");
       url.searchParams.delete("page");
@@ -103,6 +129,7 @@ export default function HomeClient({
   }
 
   async function handleSearch(newQuery: string) {
+    const currentPage = getCurrentPage();
     const trimmedQuery = newQuery.trim();
 
     if (!trimmedQuery) {
@@ -110,12 +137,10 @@ export default function HomeClient({
       return;
     }
 
-    setPage(1);
     setQuery(trimmedQuery);
+    updateUrl(trimmedQuery, currentPage);
 
-    updateUrl(trimmedQuery, 1);
-
-    const data = await searchMovies(trimmedQuery, 1);
+    const data = await searchMovies(trimmedQuery, currentPage);
 
     setMovies(data.movies);
     setHasMore(data.hasMore);
@@ -127,10 +152,17 @@ export default function HomeClient({
 
     loadingRef.current = true;
 
-    const nextPage = page + 1;
+    const nextPage = getCurrentPage() + 1;
     const data = await searchMovies(query, nextPage);
 
-    setMovies([...movies, ...data.movies]);
+    // setMovies([...movies, ...data.movies]);
+    // Use functional update to avoid duplicate movies 
+    // when multiple requests are made in quick succession
+    setMovies(prev => {
+      const map = new Map(prev.map((m: MovieListItem) => [m.id, m]));
+      data.movies.forEach((m: MovieListItem) => map.set(m.id, m));
+      return Array.from(map.values());
+    });
     setPage(nextPage);
     setHasMore(data.hasMore);
     setTotalResults(data.totalResults);
@@ -151,7 +183,6 @@ export default function HomeClient({
       </h1>
 
       <SearchBar
-        // initialQuery={queryFromUrl}
         onSearch={handleSearch}
         onClear={onTextboxClear}
       />

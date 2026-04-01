@@ -77,3 +77,9 @@ export type MovieResults = {
     total_results: number;
     total_pages: number;
 };
+
+export type MovieSearchResult = {
+    movies: MovieListItem[];
+    totalResults: number;
+    hasMore: boolean;
+};

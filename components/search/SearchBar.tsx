@@ -19,6 +19,8 @@ export default function SearchBar({
     const debouncedQuery = useDebounce(query);
 
     useEffect(() => {
+        if (debouncedQuery !== query) return;
+        
         if (debouncedQuery) {
             const fetchData = async () => {
                 setLoading(true);
