@@ -111,11 +111,11 @@ export default function HomeClient({
     }
 
     setPage(1);
-    setQuery(newQuery);
+    setQuery(trimmedQuery);
 
-    updateUrl(newQuery, 1);
+    updateUrl(trimmedQuery, 1);
 
-    const data = await searchMovies(newQuery, 1);
+    const data = await searchMovies(trimmedQuery, 1);
 
     setMovies(data.movies);
     setHasMore(data.hasMore);
