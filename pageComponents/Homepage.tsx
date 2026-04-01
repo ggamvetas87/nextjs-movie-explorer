@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { useMovies } from "@/context/MoviesContext";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import useFavorites from "@/hooks/useFavorites";
@@ -24,8 +23,6 @@ type Props = {
   upcoming?: MovieListItem[];
 };
 
-const itemsPerPage = 20;
-
 export default function HomeClient({
   initialQuery,
   initialPage = 1,
@@ -34,14 +31,15 @@ export default function HomeClient({
   upcoming: initialUpcoming
 }: Props) {
 
-  const { loading, movies, setMovies, query, setQuery } = useMovies();
-
-  const router = useRouter();
+  const { loading, movies, setMovies} = useMovies();
   const { favorites } = useFavorites();
 
+  const loadingRef = useRef(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const [page, setPage] = useState(initialPage);
+  const [page, setPage] = useState(() => initialPage);
+  const [query, setQuery] = useState(() => initialQuery);
+
   const [totalResults, setTotalResults] = useState(0);
   const [hasMore, setHasMore] = useState(false);
 
@@ -66,45 +64,38 @@ export default function HomeClient({
     if (!initialQuery || movies.length > 0) return;
 
     async function init() {
-      let allMovies: MovieListItem[] = [];
-
-      const pages = await Promise.all(
-        Array.from({ length: initialPage }, (_, i) =>
-          searchMovies(initialQuery, i + 1)
-        )
-      );
-
-      allMovies = pages.flatMap(p => p.movies);
+      const data = await searchMovies(initialQuery, initialPage);
 
       setQuery(initialQuery);
-      setMovies(allMovies);
-      setHasMore(true);
-
-      // scroll restore
-      // requestAnimationFrame(() => {
-      //   const el = resultsRef.current;
-      //   if (!el) return;
-
-      //   const targetIndex = (initialPage - 1) * itemsPerPage;
-
-      //   const item = el.children[targetIndex] as HTMLElement;
-
-      //   item?.scrollIntoView({
-      //     behavior: "instant",
-      //     block: "start"
-      //   });
-      // });
+      setMovies(data.movies);
+      setPage(initialPage);
+      setHasMore(data.hasMore);
+      setTotalResults(data.totalResults);
     }
 
     init();
-  }, [initialQuery, initialPage, setMovies, setQuery]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery, initialPage]);
 
-  function updateUrl(newQuery: string, newPage: number) {
-    router.replace(`/?query=${encodeURIComponent(newQuery)}&page=${newPage}`, { scroll: false });
+  function updateUrl(query: string, page: number) {
+    const url = new URL(window.location.href);
+
+    if (query) {
+      url.searchParams.set("query", query);
+      url.searchParams.set("page", String(page));
+    } else {
+      url.searchParams.delete("query");
+      url.searchParams.delete("page");
+    }
+
+    window.history.replaceState({}, "", url);
   }
 
   function clearSearchFromUrl() {
-    router.push("/");
+    setMovies([]);
+    setQuery("");
+    setPage(1);
+    updateUrl("", 1);
   }
 
   function onTextboxClear() {
@@ -132,10 +123,11 @@ export default function HomeClient({
   }
 
   async function loadMoreMovies() {
-    if (!hasMore) return;
+    if (!hasMore || loadingRef.current) return;
+
+    loadingRef.current = true;
 
     const nextPage = page + 1;
-
     const data = await searchMovies(query, nextPage);
 
     setMovies([...movies, ...data.movies]);
@@ -144,6 +136,7 @@ export default function HomeClient({
     setTotalResults(data.totalResults);
 
     updateUrl(query, nextPage);
+    loadingRef.current = false;
   }
 
   useInfiniteScroll(() => {
@@ -158,6 +151,7 @@ export default function HomeClient({
       </h1>
 
       <SearchBar
+        // initialQuery={queryFromUrl}
         onSearch={handleSearch}
         onClear={onTextboxClear}
       />
