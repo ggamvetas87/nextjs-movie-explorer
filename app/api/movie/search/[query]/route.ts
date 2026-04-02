@@ -17,15 +17,21 @@ export async function GET(
     return Response.json({ error: "Missing query" }, { status: 400 });
   }
 
+  const normalizedQuery = query?.trim().toLowerCase();
+
+  if (!normalizedQuery || normalizedQuery.length < 2) {
+    return Response.json({ results: [], page: 1, total_pages: 0, total_results: 0 }, { status: 200 });
+  }
+
   const data: MovieResults = await tmdbCall("/search/movie", {
       params: {
-        query,
+        query: normalizedQuery,
         language,
         include_adult: includeAdult,
-        page,
-        revalidate: 86400 // cache results for 24 hours
+        page
       },
-      tags: [`search-${query}-page-${page}`],
+      revalidate: 86400, // cache results for 24 hours
+      tags: [`search-${normalizedQuery}-page-${page}`],
       errorMessage: `Failed to fetch search results for query "${query}" on page ${page}`
     });
 

@@ -14,9 +14,9 @@ export async function GET(
 
   const data: MovieResults = await tmdbCall(`trending/movie/${time ?? "day"}`, {
       params: {
-        language,
-        revalidate: 3600 // cache results for 1 hour
+        language
       },
+      revalidate: 3600, // cache results for 1 hour
       tags: [`trending-${time ?? "day"}`],
       errorMessage: `Failed to fetch trending movies for time "${time ?? "day"}"`
     });

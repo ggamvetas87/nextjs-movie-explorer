@@ -18,9 +18,9 @@ export async function GET(
   const data: MovieResults = await tmdbCall(`/movie/${id}`, {
       params: {
         language,
-        append_to_response: extraFields,
-        revalidate: 3600 // cache results for 1 hour
+        append_to_response: extraFields
       },
+      revalidate: 3600, // cache results for 1 hour
       tags: [`details-${id}`],
       errorMessage: `Failed to fetch details for movie with id "${id}"`
     });

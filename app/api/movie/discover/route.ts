@@ -19,9 +19,9 @@ export async function GET(req: NextRequest) {
         with_genres: genres,
         language,
         include_adult: includeAdult,
-        page,
-        revalidate: 86400 // cache results for 24 hours
+        page
       },
+      revalidate: 86400, // cache results for 24 hours
       tags: [`discover-${genres}-page-${page}`],
       errorMessage: `Failed to fetch discover results for genres "${genres}" on page ${page}`
     });

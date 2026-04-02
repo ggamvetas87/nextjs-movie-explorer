@@ -16,9 +16,9 @@ export async function GET(
 
   const data: MovieResults = await tmdbCall(`/movie/${id}/similar`, {
       params: {
-        language,
-        revalidate: 3600 // cache results for 1 hour
+        language
       },
+      revalidate: 3600, // cache results for 1 hour
       tags: [`similar-${id}`],
       errorMessage: `Failed to fetch similar movies for movie with id "${id}"`
     });

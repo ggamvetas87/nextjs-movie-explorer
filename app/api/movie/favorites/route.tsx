@@ -16,9 +16,9 @@ export async function GET(req: NextRequest) {
       movieIds.map((id) =>
         tmdbCall(`/movie/${id}`, {
           params: {
-            language,
-            revalidate: 3600 // cache results for 1 hour
+            language
           },
+          revalidate: 3600, // cache results for 1 hour
           errorMessage: `Failed to fetch movie details for movie with id "${id}"`
         }).then(r => (r as unknown as MovieListItem))
       )
