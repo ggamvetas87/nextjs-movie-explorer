@@ -14,7 +14,11 @@ export async function getMovie(
   } = {},
 ) {
   const data: MovieListItem = await tmdbCall(`/movie/${id}`, {
-    params: { language, append_to_response },
+    params: { 
+      language,
+      append_to_response,
+      revalidate: 3600 // cache results for 1 hour
+    },
     tags: [`movie-${id}`],
     errorMessage: `Failed to fetch details for movie with ID ${id}`
   });
@@ -25,7 +29,10 @@ export async function getMovie(
 export async function getSimilarMovies(id: string | number, limit: number = 20
 ) {
   const data: MovieResults = await tmdbCall(`/movie/${id}/similar`, {
-    params: { language: "en-US" },
+    params: { 
+      language: "en-US",
+      revalidate: 3600 // cache results for 1 hour
+    },
     tags: [`similar-${id}`],
     errorMessage: `Failed to fetch similar movies for movie with ID ${id}`
   });
@@ -36,9 +43,10 @@ export async function getSimilarMovies(id: string | number, limit: number = 20
 export async function getCategoryMovies(genres: string, page: number = 1, limit: number = 99999) {
   const data: MovieResults = await tmdbCall("/discover/movie", {
     params: {
-        with_genres: genres,
-        language: "en-US",
-        page
+      with_genres: genres,
+      language: "en-US",
+      page,
+      revalidate: 86400 // cache results for 24 hours
     },
     tags: [`category-${genres}-page-${page}`],
     errorMessage: `Failed to fetch movies for category ${genres} on page ${page}`
@@ -61,7 +69,10 @@ export async function getTrendingMovies(
     limit?: number;
 } = {}) {
   const data: MovieResults = await tmdbCall(`/trending/movie/${time}`, {
-    params: { language },
+    params: { 
+      language,
+      revalidate: 3600 // cache results for 1 hour
+    },
     tags: ["trending"],
     errorMessage: `Failed to fetch trending movies for time window ${time}`
   });
@@ -79,7 +90,10 @@ export async function getMovieTagList(
     limit?: number;
 } = {}) {
   const data: MovieResults = await tmdbCall(`/movie/${tag}`, {
-    params: { language },
+    params: { 
+      language,
+      revalidate: 3600 // cache results for 1 hour
+    },
     tags: [tag],
     errorMessage: `Failed to fetch movies for tag ${tag}`
 
