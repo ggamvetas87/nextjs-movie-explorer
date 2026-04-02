@@ -59,10 +59,12 @@ export default function HomeClient({
   }, [favorites]);
 
   useEffect(() => {
-    if (prevQueryRef.current !== query) {
+    // If the query has changed and it's not the initial query, reset to page 1
+    if (prevQueryRef.current !== query && prevQueryRef.current !== "") {
       setPage(1);
     }
 
+    // Update the previous query ref to the current query after handling the change
     prevQueryRef.current = query;
   }, [query]);
 
