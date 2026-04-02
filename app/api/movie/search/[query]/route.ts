@@ -1,4 +1,6 @@
 import { NextRequest } from "next/server";
+import { tmdbCall } from "@/lib/server/services";
+import { MovieResults } from "@/types/thmdb";
 
 export async function GET(
   req: NextRequest, 
@@ -15,17 +17,18 @@ export async function GET(
     return Response.json({ error: "Missing query" }, { status: 400 });
   }
 
-  const res = await fetch(
-    `${process.env.TMDB_BASE_URL}/search/movie?query=${query}&language=${language}&include_adult=${includeAdult}&page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+  const data: MovieResults = await tmdbCall("/search/movie", {
+      params: {
+        query,
+        language,
+        include_adult: includeAdult,
+        page,
+        revalidate: 86400 // cache results for 24 hours
       },
-      next: { revalidate: 3600 },
-    }
-  );
+      tags: [`search-${query}-page-${page}`],
+      errorMessage: `Failed to fetch search results for query "${query}" on page ${page}`
+    });
 
-  const data = await res.json();
   const movies = data.results || [];
 
   return Response.json({

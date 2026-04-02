@@ -1,4 +1,6 @@
 import { NextRequest } from "next/server";
+import { tmdbCall } from "@/lib/server/services";
+import { MovieResults } from "@/types/thmdb";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req?.url);
@@ -12,17 +14,18 @@ export async function GET(req: NextRequest) {
     return Response.json({ error: "Missing category ID" }, { status: 400 });
   }
 
-  const res = await fetch(
-    `${process.env.TMDB_BASE_URL}/discover/movie?with_genres=${genres}&language=${language}&include_adult=${includeAdult}&page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+  const data: MovieResults = await tmdbCall("/discover/movie", {
+      params: {
+        with_genres: genres,
+        language,
+        include_adult: includeAdult,
+        page,
+        revalidate: 86400 // cache results for 24 hours
       },
-      next: { revalidate: 3600 },
-    }
-  );
+      tags: [`discover-${genres}-page-${page}`],
+      errorMessage: `Failed to fetch discover results for genres "${genres}" on page ${page}`
+    });
 
-  const data = await res.json();
   const movies = data.results || [];
 
   return Response.json({

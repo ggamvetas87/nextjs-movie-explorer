@@ -1,4 +1,6 @@
 import { NextRequest } from "next/server";
+import { tmdbCall } from "@/lib/server/services";
+import { MovieResults } from "@/types/thmdb";
 
 export async function GET(
   req: NextRequest, 
@@ -9,18 +11,15 @@ export async function GET(
   const { time } = await params;
   const { searchParams } = new URL(req?.url);
   const language = searchParams.get("language") || "en-US";
-  
-  const res = await fetch(
-    `${process.env.TMDB_BASE_URL}/trending/movie/${time ?? "day"}?language=${language}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-      },
-      next: { revalidate: 3600 },
-    }
-  );
 
-  const data = await res.json();
+  const data: MovieResults = await tmdbCall(`trending/movie/${time ?? "day"}`, {
+      params: {
+        language,
+        revalidate: 3600 // cache results for 1 hour
+      },
+      tags: [`trending-${time ?? "day"}`],
+      errorMessage: `Failed to fetch trending movies for time "${time ?? "day"}"`
+    });
 
   return Response.json(data);
 }

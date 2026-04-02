@@ -1,6 +1,6 @@
 type FetchOptions = {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  params?: Record<string, string | number | undefined>;
+  params?: Record<string, string | number | boolean | null | undefined>;
   body?: unknown;
   headers?: HeadersInit;
   revalidate?: number;

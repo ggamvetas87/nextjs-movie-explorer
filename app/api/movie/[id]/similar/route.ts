@@ -1,4 +1,6 @@
 import { NextRequest } from "next/server";
+import { tmdbCall } from "@/lib/server/services";
+import { MovieResults } from "@/types/thmdb";
 
 export async function GET(
   req: NextRequest, 
@@ -11,18 +13,15 @@ export async function GET(
   if (!id) {
     return Response.json({ error: "Missing id" }, { status: 400 });
   }
-  
-  const res = await fetch(
-    `${process.env.TMDB_BASE_URL}/movie/${id}/similar?language=${language}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-      },
-      next: { revalidate: 3600 },
-    }
-  );
 
-  const data = await res.json();
+  const data: MovieResults = await tmdbCall(`/movie/${id}/similar`, {
+      params: {
+        language,
+        revalidate: 3600 // cache results for 1 hour
+      },
+      tags: [`similar-${id}`],
+      errorMessage: `Failed to fetch similar movies for movie with id "${id}"`
+    });
 
   return Response.json(data);
 }
