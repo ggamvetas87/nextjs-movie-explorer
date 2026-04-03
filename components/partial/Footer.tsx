@@ -13,7 +13,6 @@ export default function Footer() {
       gap-6
       border-t-1
       border-white
-      text-white
     ">
       <div className="w-auto md:w-6/12 lg:w-6/12">
         <div className="flex items-center gap-1">
