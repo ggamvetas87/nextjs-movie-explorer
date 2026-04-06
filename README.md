@@ -112,3 +112,8 @@ This project uses the TMDB (The Movie Database) API for fetching movie data.
 ## License
 
 MIT
+
+## Demo
+https://popcornia.vercel.app/
+
+Contact me for invitation code at ggamvetas[at]gmail.com
