@@ -116,4 +116,8 @@ MIT
 ## Demo
 https://popcornia.vercel.app/
 
-Contact me for invitation code at ggamvetas[at]gmail.com
+Contact me for invitation code and Demo access at ggamvetas[at]gmail.com
+
+## Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/Ht31k8k9zj8/maxresdefault.jpg)](https://www.youtube.com/watch?v=Ht31k8k9zj8)
